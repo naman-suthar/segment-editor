@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/gridBox"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_margin="4dp">
+
+        <View
+            android:id="@+id/pickColorForGradient"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
+
+        <TextView
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/deleteGridBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/white_translucent"
+            android:gravity="center"
+            android:text="X"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>
+

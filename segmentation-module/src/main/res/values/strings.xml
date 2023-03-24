@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="leftimage">delete</string>
+    <string name="barBack">Bar Background</string>
+    <string name="zero">0</string>
+    <string name="hund">100</string>
+    <string name="single_tag">single</string>
+    <string name="min_text2">Minimum segment length is 5!</string>
+    <string name="min_text3">Minimum segment length is 5!</string>
+    <array name="initial_slider_values">
+        <item>25</item>
+        <item>75</item>
+    </array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="multi_tag">Multi</string>
+    <string name="min_text">Minimum 2 colors needed for gradient!</string>
+    <color name="black">#000000</color>
+    <color name="green">#005051</color>
+    <color name="red">#E51400</color>
+    <color name="std_blue">#0099CC</color>
+    <color name="transparent">#008B8B8B</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="backgroundColor">#9EDEFA</color>
+    <color name="default_bar_color">#C1E859</color>
+    <color name="white_translucent">#50FFFFFF</color>
+    <string name="HEX_TITLE" translatable="false">HEX</string>
+    <string name="HSV_TITLE" translatable="false">HSV</string>
+    <string name="RGB_TITLE" translatable="false">RGB</string>
+    <string name="a">A</string>
+    <string name="apply_hex">Apply</string>
+    <string name="b" translatable="false">B</string>
+    <string name="chooseApp">Choose App</string>
+    <string name="g" translatable="false">G</string>
+    <string name="hex_code_picker">Invalid HEX code!</string>
+    <string name="newColor">New Color</string>
+    <string name="oldColor">Old Color</string>
+    <string name="r" translatable="false">R</string>
+</resources>

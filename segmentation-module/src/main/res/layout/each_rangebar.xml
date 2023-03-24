@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/startTxt"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/border_rangebar"
+        android:text="@string/zero"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/thicknessSlider_custom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:stepSize="1"
+        android:valueFrom="0.0"
+        android:valueTo="100.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/endTxt"
+        app:layout_constraintStart_toEndOf="@+id/startTxt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tickVisible="false"
+        app:trackColorInactive="#00FFFFFF"
+        android:value="100"
+        android:visibility="gone"/>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rangeBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:stepSize="1"
+        android:valueFrom="0.0"
+        android:valueTo="100.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/endTxt"
+        app:layout_constraintStart_toEndOf="@+id/startTxt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tickVisible="false"
+        app:trackColorInactive="#00FFFFFF"
+        app:values="@array/initial_slider_values" />
+
+
+
+    <TextView
+        android:id="@+id/endTxt"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/border_rangebar"
+        android:text="@string/hund"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_on_secondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/colorPickerBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.686" />
+
+    <ImageView
+        android:id="@+id/leftImage"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/border_rangebar"
+        android:contentDescription="@string/leftimage"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/delete_sweep" />
+
+    <ImageView
+        android:id="@+id/rightImage"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/border_rangebar"
+        android:contentDescription="@string/leftimage"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/colorPickerBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/delete_sweep" />
+
+    <ImageView
+        android:id="@+id/colorPickerBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/color_picker_bg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
