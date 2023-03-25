@@ -53,8 +53,8 @@ afterEvaluate {
                 from components.release
 
                 groupId = 'com.github.naman-suthar'
-                artifactId = 'segmentation'
-                version = '1.1'
+                artifactId = 'segmenteditor'
+                version = '1.0'
             }
         }
     }
