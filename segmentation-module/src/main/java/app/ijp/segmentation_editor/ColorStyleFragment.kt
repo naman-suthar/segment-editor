@@ -35,6 +35,7 @@ class ColorStyleFragment : Fragment() {
 
     /**
      * For ParentHost Fragment
+     *
      */
     private var getOnColorStyleChange: ((Int) -> Unit)? = null
     private var getColorHistory: (() -> List<Int>?)? = null
