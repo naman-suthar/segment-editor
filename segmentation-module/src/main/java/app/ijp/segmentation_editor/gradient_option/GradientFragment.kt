@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.gradient_option
+package app.ijp.segmentation_editor.gradient_option
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,14 +10,14 @@ import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import app.ijp.segmentation_editor.R
+import app.ijp.segmentation_editor.databinding.FragmentGradientBinding
 import com.naman.color_dialog.ColorDialog
 import com.naman.color_dialog.OnColorChangedListener
-import com.naman.segmentation_module.R
-import com.naman.segmentation_module.databinding.FragmentGradientBinding
-import com.naman.segmentation_module.model.GridData
-import com.naman.segmentation_module.model.RangeBarArray
-import com.naman.segmentation_module.segment_option.CustomComponentsCallback
-import com.naman.segmentation_module.multi_color_dialog.MultiColorDialog
+import app.ijp.segmentation_editor.model.GridData
+import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback
+import app.ijp.segmentation_editor.multi_color_dialog.MultiColorDialog
 
 
 

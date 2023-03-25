@@ -3,18 +3,11 @@ package com.naman.segmentationsampleapp
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import androidx.lifecycle.lifecycleScope
-import com.naman.segmentation_module.ColorStyleFragment
-import com.naman.segmentation_module.model.RangeBarArray
+import app.ijp.segmentation_editor.ColorStyleFragment
+import app.ijp.segmentation_editor.model.RangeBarArray
 import com.naman.segmentationsampleapp.databinding.ActivityMainBinding
 import com.naman.segmentationsampleapp.db.app_db.AppDb
 import com.naman.segmentationsampleapp.db.app_db.MainRepo
@@ -22,6 +15,7 @@ import com.naman.segmentationsampleapp.db.model.ColorHistory
 import com.naman.segmentationsampleapp.db.model.GridData
 import com.naman.segmentationsampleapp.db.model.RangeBarDto
 import kotlinx.coroutines.flow.collectLatest
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -56,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         myFragment?.setOnColorStyleChange {
             mainActivityViewModel?.updateColorStyle(it)
         }
-        myFragment?.setTempArray {
+        myFragment?.setDataForSegmentsPreview {
             tempArrayRangeBar
         }
         /**
@@ -66,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             listColorHistory
         }
         /**For Segments and Gradient*/
-        myFragment?.setArrayListProvider {
+        myFragment?.setSegmentsData {
             arrayRangeBar
         }
 
@@ -97,12 +91,12 @@ class MainActivity : AppCompatActivity() {
         }
         /**
          * For Gradient*/
-        myFragment?.setGridData {
+        myFragment?.setDataForGradientPreviewAndEditor {
             listGrid?.map {
-                com.naman.segmentation_module.model.GridData(it.id,it.seqNumber,it.gridColor)
+                app.ijp.segmentation_editor.model.GridData(it.id, it.seqNumber, it.gridColor)
             }
         }
-        myFragment?.setOnGridColorChange { strings, newColor ->
+        myFragment?.setSingleGradientColorChanged { strings, newColor ->
             mainActivityViewModel?.clearGridData()
             for (i in strings.indices) {
                 mainActivityViewModel?.insertGridColor(
@@ -120,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-        myFragment?.setOnGridColorDeleted {
+        myFragment?.setGradientColorChangedOnDeletion {
             mainActivityViewModel?.clearGridData()
             val gridDataList = ArrayList<GridData>()
             for (i in it.indices) {
@@ -128,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             }
             mainActivityViewModel?.insertAllGridColor(gridDataList)
         }
-        myFragment?.setOnGridChangeProvider {
+        myFragment?.getAutoMultiColorGradientColors {
             mainActivityViewModel?.clearGridData()
             for (i in it.indices) {
                 mainActivityViewModel?.insertGridColor(
@@ -146,6 +140,19 @@ class MainActivity : AppCompatActivity() {
             transaction.commitNow()
         }
 
+        binding?.btnDetachPreview?.setOnClickListener {
+
+            myFragment?.dettachPreview()
+        }
+        binding?.btnDetachSegment?.setOnClickListener {
+            myFragment?.dettachColorStyleInput()
+        }
+        binding?.btnAttachPreview?.setOnClickListener {
+            myFragment?.attachBarPreview()
+        }
+        binding?.btnAttachSegment?.setOnClickListener {
+            myFragment?.attachColorStyleFragment()
+        }
         /**
          * View model Observers
          * */
@@ -181,6 +188,9 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel?.gridData?.observe(this) {
             Log.d("Observer2", "$it")
+            it.forEach {
+                Log.d("Grid Data","Obs $it")
+            }
             listGrid = it
             myFragment?.updateGradientFragment()
             myFragment?.updateGradientPreview()
@@ -214,3 +224,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+

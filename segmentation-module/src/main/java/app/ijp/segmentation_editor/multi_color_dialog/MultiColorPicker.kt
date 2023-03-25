@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.multi_color_dialog
+package app.ijp.segmentation_editor.multi_color_dialog
 
 import android.annotation.SuppressLint
 import android.content.Context

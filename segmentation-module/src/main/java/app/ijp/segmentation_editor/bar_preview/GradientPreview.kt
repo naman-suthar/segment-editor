@@ -1,12 +1,12 @@
-package com.naman.segmentation_module.bar_preview
+package app.ijp.segmentation_editor.bar_preview
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.naman.segmentation_module.databinding.FragmentGradientColorBarBinding
-import com.naman.segmentation_module.model.GridData
+import app.ijp.segmentation_editor.databinding.FragmentGradientColorBarBinding
+import app.ijp.segmentation_editor.model.GridData
 
 
 class GradientPreview : Fragment() {

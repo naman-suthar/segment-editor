@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".bar_preview.MergedGradientPreview">
-<com.naman.segmentation_module.bar_preview.MergedGradientBar
+<app.ijp.segmentation_editor.bar_preview.MergedGradientBar
     android:id="@+id/preview_gradient"
     android:layout_width="match_parent"
     android:layout_marginTop="16dp"

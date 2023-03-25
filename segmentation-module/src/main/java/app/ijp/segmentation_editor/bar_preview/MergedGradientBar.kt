@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.bar_preview
+package app.ijp.segmentation_editor.bar_preview
 
 import android.content.Context
 import android.graphics.*

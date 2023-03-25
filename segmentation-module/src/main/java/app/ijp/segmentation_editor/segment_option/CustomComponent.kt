@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.segment_option
+package app.ijp.segmentation_editor.segment_option
 
 import android.app.ActionBar
 import android.content.Context
@@ -15,13 +15,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.FragmentManager
+import app.ijp.segmentation_editor.R
+import app.ijp.segmentation_editor.databinding.EachRangebarBinding
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
 import com.naman.color_dialog.ColorDialog
 import com.naman.color_dialog.OnColorChangedListener
-import com.naman.segmentation_module.R
-import com.naman.segmentation_module.databinding.EachRangebarBinding
-import com.naman.segmentation_module.model.RangeBarArray
+import app.ijp.segmentation_editor.model.RangeBarArray
 import kotlin.math.abs
 
 

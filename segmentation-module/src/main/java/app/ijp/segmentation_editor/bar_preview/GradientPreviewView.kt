@@ -1,8 +1,9 @@
-package com.naman.segmentation_module.bar_preview
+package app.ijp.segmentation_editor.bar_preview
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 class GradientPreviewView(context: Context, attributeSet: AttributeSet): View(context,attributeSet) {
@@ -10,9 +11,15 @@ class GradientPreviewView(context: Context, attributeSet: AttributeSet): View(co
     var colorPositionArray = floatArrayOf(0f,0.33f,0.67f)
     val path = Path()
     fun updateBar(colors: IntArray,colorsPosition: FloatArray){
-        colorArray = colors
-        colorPositionArray = colorsPosition
-        invalidate()
+        colors.forEach {
+            Log.d("ColorIsThis","$it")
+        }
+        if (colors.size>=2){
+            colorArray = colors
+            colorPositionArray = colorsPosition
+            invalidate()
+        }
+
     }
     override fun onDraw(canvas: Canvas?) {
         val gradient = LinearGradient(0f, 0f, width.toFloat(), 0f,

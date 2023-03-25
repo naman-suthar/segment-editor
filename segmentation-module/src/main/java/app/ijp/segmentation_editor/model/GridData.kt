@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.model
+package app.ijp.segmentation_editor.model
 
 
 data class GridData (

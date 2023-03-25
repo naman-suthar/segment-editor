@@ -1,6 +1,6 @@
-package com.naman.segmentation_module.segment_option
+package app.ijp.segmentation_editor.segment_option
 
-import com.naman.segmentation_module.model.RangeBarArray
+import app.ijp.segmentation_editor.model.RangeBarArray
 
 interface CustomComponentsCallback {
     fun onValueChanged(arrayList: MutableList<RangeBarArray>, color: Int?)

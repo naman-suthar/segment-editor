@@ -44,7 +44,7 @@
         android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
-        <com.naman.segmentation_module.gradient_option.ExpandedGridView
+        <app.ijp.segmentation_editor.gradient_option.ExpandedGridView
             android:id="@+id/gridGradient"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

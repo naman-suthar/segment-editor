@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.bar_preview
+package app.ijp.segmentation_editor.bar_preview
 
 import android.graphics.Color
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.naman.segmentation_module.databinding.FragmentGradientBarPreviewBinding
-import com.naman.segmentation_module.model.RangeBarArray
+import app.ijp.segmentation_editor.databinding.FragmentGradientBarPreviewBinding
+import app.ijp.segmentation_editor.model.RangeBarArray
 
 
 class MergedGradientPreview : Fragment() {

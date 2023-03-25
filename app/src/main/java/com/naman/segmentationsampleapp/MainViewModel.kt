@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.naman.segmentation_module.model.RangeBarArray
+import app.ijp.segmentation_editor.model.RangeBarArray
 import com.naman.segmentationsampleapp.db.app_db.MainRepo
 import com.naman.segmentationsampleapp.db.model.ColorHistory
 import com.naman.segmentationsampleapp.db.model.GridData
@@ -54,6 +54,10 @@ class MainViewModel(private val mainRepo: MainRepo) : ViewModel() {
     }
 
     fun insertAllGridColor(gridData: List<GridData>) = viewModelScope.launch {
+        gridData.forEach {
+            Log.d("Grid Data","$it")
+        }
+
         val newRowId = mainRepo.insertAllGrid(gridData)
     }
     fun updateGridData(position: Int, color: String) = viewModelScope.launch {

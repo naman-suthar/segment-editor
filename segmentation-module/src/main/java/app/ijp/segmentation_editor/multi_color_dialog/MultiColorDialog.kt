@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.multi_color_dialog
+package app.ijp.segmentation_editor.multi_color_dialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -9,10 +9,11 @@ import android.view.*
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.naman.segmentation_module.segment_option.CustomComponentsCallback
+import app.ijp.segmentation_editor.R
+import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback
 import com.google.android.material.slider.Slider
 import com.google.android.material.slider.Slider.OnChangeListener
-import com.naman.segmentation_module.R
+
 
 const val LAST_GRADIENT_COLOR = "rn..adk"
 const val GRADIENT_COUNT = "..n@kln"

@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.segment_option
+package app.ijp.segmentation_editor.segment_option
 
 import android.app.ActionBar
 import android.os.Bundle
@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import app.ijp.segmentation_editor.R
+import app.ijp.segmentation_editor.databinding.EachRangebarBinding
+import app.ijp.segmentation_editor.databinding.FragmentSegmentRangeBarsBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.naman.segmentation_module.R
-import com.naman.segmentation_module.databinding.EachRangebarBinding
-import com.naman.segmentation_module.databinding.FragmentSegmentRangeBarsBinding
-import com.naman.segmentation_module.model.RangeBarArray
+import app.ijp.segmentation_editor.model.RangeBarArray
 import kotlin.math.abs
 
 const val LEFT_POSITION = 0

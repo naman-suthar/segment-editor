@@ -1,4 +1,4 @@
-package com.naman.segmentation_module.gradient_option
+package app.ijp.segmentation_editor.gradient_option
 
 import android.content.Context
 import android.graphics.Color
@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.naman.segmentation_module.R
-import com.naman.segmentation_module.segment_option.CustomComponentsCallback
+import app.ijp.segmentation_editor.R
+import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback
 
 
 
