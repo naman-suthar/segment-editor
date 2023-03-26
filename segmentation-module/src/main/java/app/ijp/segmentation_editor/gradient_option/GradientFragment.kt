@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import app.ijp.colorpickerdialog.ColorDialog
+import app.ijp.colorpickerdialog.OnColorChangedListener
 import app.ijp.segmentation_editor.R
 import app.ijp.segmentation_editor.databinding.FragmentGradientBinding
-import com.naman.color_dialog.ColorDialog
-import com.naman.color_dialog.OnColorChangedListener
 import app.ijp.segmentation_editor.model.GridData
 import app.ijp.segmentation_editor.model.RangeBarArray
 import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback

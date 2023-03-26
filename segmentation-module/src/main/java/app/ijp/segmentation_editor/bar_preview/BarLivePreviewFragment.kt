@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import app.ijp.segmentation_editor.ColorStyleOption
 import app.ijp.segmentation_editor.R
 import app.ijp.segmentation_editor.databinding.FragmentBarLivePreviewBinding
 import app.ijp.segmentation_editor.model.RangeBarArray
@@ -52,17 +53,17 @@ class BarLivePreviewFragment : Fragment() {
             }
         }
         when (barPreviewType) {
-            0 -> {
+            ColorStyleOption.Segment.colorStyle -> {
                 val frag = HorizontalBarPreviewFragment()
                 frag.updateList(arrayList)
                 loadBarViewFragment(frag)
             }
-            1 -> {
+            ColorStyleOption.MergedSegment.colorStyle -> {
                 val frag = VerticalSegmentBarPreviewFragment()
                 frag.updateList(arrayList)
                 loadBarViewFragment(frag)
             }
-            2 -> {
+            ColorStyleOption.GradientSegment.colorStyle -> {
                 val frag = MergedGradientPreview()
                 frag.updateList(arrayList)
                 loadBarViewFragment(frag)

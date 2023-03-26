@@ -15,12 +15,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.FragmentManager
+import app.ijp.colorpickerdialog.ColorDialog
+import app.ijp.colorpickerdialog.OnColorChangedListener
 import app.ijp.segmentation_editor.R
 import app.ijp.segmentation_editor.databinding.EachRangebarBinding
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
-import com.naman.color_dialog.ColorDialog
-import com.naman.color_dialog.OnColorChangedListener
 import app.ijp.segmentation_editor.model.RangeBarArray
 import kotlin.math.abs
 
