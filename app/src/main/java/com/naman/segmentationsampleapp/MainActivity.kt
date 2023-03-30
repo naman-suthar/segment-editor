@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         val mainDao = AppDb.getInstance(applicationContext).mainDao
         val repo = MainRepo(mainDao)
         mainActivityViewModel = MainVMFactory(repo).create(MainViewModel::class.java)
+
+
         myFragment = ColorStyleFragment()
         /**
          * For Bar Preview*/
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             arrayRangeBar
         }
 
-        myFragment?.setOnSegmentValueChangeListener { rangeBarArrays, newColor ->
+        myFragment?.setOnSegmentValueChangeListener         { rangeBarArrays, newColor ->
             mainActivityViewModel?.clearColorTable()
             val rangeBarDtoList = rangeBarArrays.map { rb ->
                 RangeBarDto(
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         myFragment?.setOnSliderChange {
-            mainActivityViewModel?.updateArrayState(it,"SliderChange")
+            mainActivityViewModel?.updateArrayState(it, "SliderChange")
         }
         /**
          * For Gradient*/
@@ -140,19 +142,7 @@ class MainActivity : AppCompatActivity() {
             transaction.commitNow()
         }
 
-        binding?.btnDetachPreview?.setOnClickListener {
 
-            myFragment?.dettachPreview()
-        }
-        binding?.btnDetachSegment?.setOnClickListener {
-            myFragment?.dettachColorStyleInput()
-        }
-        binding?.btnAttachPreview?.setOnClickListener {
-            myFragment?.attachBarPreview()
-        }
-        binding?.btnAttachSegment?.setOnClickListener {
-            myFragment?.attachColorStyleFragment()
-        }
         /**
          * View model Observers
          * */
@@ -189,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel?.gridData?.observe(this) {
             Log.d("Observer2", "$it")
             it.forEach {
-                Log.d("Grid Data","Obs $it")
+                Log.d("Grid Data", "Obs $it")
             }
             listGrid = it
             myFragment?.updateGradientFragment()
@@ -225,3 +215,17 @@ class MainActivity : AppCompatActivity() {
 
 }
 
+
+/*  binding?.btnDetachPreview?.setOnClickListener {
+
+         myFragment?.dettachPreview()
+     }
+     binding?.btnDetachSegment?.setOnClickListener {
+         myFragment?.dettachColorStyleInput()
+     }
+     binding?.btnAttachPreview?.setOnClickListener {
+         myFragment?.attachBarPreview()
+     }
+     binding?.btnAttachSegment?.setOnClickListener {
+         myFragment?.attachColorStyleFragment()
+     }*/

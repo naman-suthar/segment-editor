@@ -6,8 +6,6 @@ import com.naman.segmentationsampleapp.db.model.RangeBarDto
 import com.naman.segmentationsampleapp.db.model.Settings
 
 class MainRepo (private val mainDao: MainDao) {
-
-
     val rangeBarsList = mainDao.getAllRangeBars()
     val gridData = mainDao.getAllGridData()
     val colorHistory = mainDao.getRecentColors()
@@ -18,20 +16,16 @@ class MainRepo (private val mainDao: MainDao) {
     suspend fun deleteAllTables() : Int{
         return mainDao.deleteAllRangeBars()
     }
-
-
     //Grid Data
     suspend fun insertGridColor(gridData: GridData) : Long{
         return mainDao.insertGridColor(gridData)
     }
-
     suspend fun insertAllGrid(gridData: List<GridData>)  {
         return mainDao.insertAllGrid(gridData)
     }
     suspend fun updateGridColor(position:Int , color :String ) : Int{
         return mainDao.updateGridColor(position,color)
     }
-
     suspend fun deleteGridData() : Int{
         return mainDao.deleteGridData()
     }
@@ -47,8 +41,6 @@ class MainRepo (private val mainDao: MainDao) {
     suspend fun insert(settings: Settings) {
         mainDao.insertSettings(settings)
     }
-
-
     suspend fun updateColorStyle(colorStyle: Int) {
         mainDao.updateColorStyle(colorStyle)
     }

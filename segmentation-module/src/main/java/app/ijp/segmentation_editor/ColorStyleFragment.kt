@@ -1,6 +1,7 @@
 package app.ijp.segmentation_editor
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,11 @@ import android.widget.AutoCompleteTextView
 import android.widget.Filter
 import app.ijp.segmentation_editor.bar_preview.BarLivePreviewFragment
 import app.ijp.segmentation_editor.gradient_option.GradientFragment
-import app.ijp.segmentation_editor.segment_option.SegmentRangeBarsFragment
 import app.ijp.segmentation_editor.bar_preview.GradientPreview
 import app.ijp.segmentation_editor.databinding.FragmentColorStyleBinding
 import app.ijp.segmentation_editor.model.GridData
 import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.segment_option.SegmentRangeBarsFragment
 
 
 class ColorStyleFragment : Fragment() {
@@ -172,6 +173,7 @@ class ColorStyleFragment : Fragment() {
     }
 
     fun loadColorStyleInputFragment() {
+        Log.d("Initilization","I am In Loading Segments")
         getColorStyle?.let {
             it()?.let { colorStyle ->
                 when (colorStyle) {
@@ -279,6 +281,7 @@ class ColorStyleFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentColorStyleBinding.inflate(inflater, container, false)
+        Log.d("Initilization","I am Initialized")
         /**For Segments -> SegmentFragment*/
         mySegmentFragment = SegmentRangeBarsFragment()
         mySegmentFragment?.setProviders()
@@ -320,6 +323,8 @@ class ColorStyleFragment : Fragment() {
                 }
             }
         }
+        loadBarViewFragment()
+        loadColorStyleInputFragment()
         return binding?.root
     }
 

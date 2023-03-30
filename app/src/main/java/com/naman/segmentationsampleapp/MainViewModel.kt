@@ -1,6 +1,7 @@
 package com.naman.segmentationsampleapp
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -23,6 +24,9 @@ class MainViewModel(private val mainRepo: MainRepo) : ViewModel() {
 
     private val _tempRangeBarArray: MutableStateFlow<MutableList<RangeBarArray>?> = MutableStateFlow(
        null
+    )
+    private val _tempRangeBarArrayLD: MutableLiveData<MutableList<RangeBarArray>?> = MutableLiveData(
+        null
     )
     val tempArrayState = _tempRangeBarArray.asStateFlow()
 

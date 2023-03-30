@@ -54,12 +54,12 @@ class BarLivePreviewFragment : Fragment() {
         }
         when (barPreviewType) {
             ColorStyleOption.Segment.colorStyle -> {
-                val frag = HorizontalBarPreviewFragment()
+                val frag = VerticalSegmentBarPreviewFragment()
                 frag.updateList(arrayList)
                 loadBarViewFragment(frag)
             }
             ColorStyleOption.MergedSegment.colorStyle -> {
-                val frag = VerticalSegmentBarPreviewFragment()
+                val frag = HorizontalBarPreviewFragment()
                 frag.updateList(arrayList)
                 loadBarViewFragment(frag)
             }
