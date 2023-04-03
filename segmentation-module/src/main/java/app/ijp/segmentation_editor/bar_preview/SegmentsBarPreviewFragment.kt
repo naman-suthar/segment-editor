@@ -11,7 +11,7 @@ import app.ijp.segmentation_editor.databinding.FragmentVerticalSegmentBarPreview
 import app.ijp.segmentation_editor.model.RangeBarArray
 
 
-class VerticalSegmentBarPreviewFragment : Fragment() {
+class SegmentsBarPreviewFragment : Fragment() {
    private var binding: FragmentVerticalSegmentBarPreviewBinding? = null
     private var arrayList: MutableList<RangeBarArray> = mutableListOf()
     fun updateList(list: MutableList<RangeBarArray>) {

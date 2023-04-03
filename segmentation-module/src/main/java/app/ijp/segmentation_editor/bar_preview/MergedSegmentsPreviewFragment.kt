@@ -10,8 +10,9 @@ import android.widget.LinearLayout
 import app.ijp.segmentation_editor.databinding.FragmentHorizontalBarPreviewBinding
 import app.ijp.segmentation_editor.model.RangeBarArray
 
-
-class HorizontalBarPreviewFragment : Fragment() {
+/**
+ * This is the MergedSegment Preview*/
+class MergedSegmentsPreviewFragment : Fragment() {
     private var binding: FragmentHorizontalBarPreviewBinding? = null
     private var arrayList: MutableList<RangeBarArray> = mutableListOf()
     fun updateList(list: MutableList<RangeBarArray>) {
@@ -44,12 +45,6 @@ class HorizontalBarPreviewFragment : Fragment() {
                 } else {
                     diff + 1
                 }
-                /*var diff = (rangebarView.rangeBar.values[1] - rangebarView.rangeBar.values[0])
-                            if (diff == 0f) {
-                                diff
-                            } else {
-                                diff + 1
-                            }*/
                 val barViewLp = LinearLayout.LayoutParams(
                     0,
                     ActionBar.LayoutParams.MATCH_PARENT,

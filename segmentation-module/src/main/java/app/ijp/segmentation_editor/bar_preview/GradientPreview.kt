@@ -9,6 +9,8 @@ import app.ijp.segmentation_editor.databinding.FragmentGradientColorBarBinding
 import app.ijp.segmentation_editor.model.GridData
 
 
+/**
+ * This is Preview for the Gradients*/
 class GradientPreview : Fragment() {
     private var binding: FragmentGradientColorBarBinding? = null
     private var colorsArray = intArrayOf()

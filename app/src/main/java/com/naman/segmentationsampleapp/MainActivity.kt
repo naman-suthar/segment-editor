@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import app.ijp.segmentation_editor.ColorStyleFragment
+import app.ijp.segmentation_editor.ColorStyleOption
 import app.ijp.segmentation_editor.model.RangeBarArray
 import com.naman.segmentationsampleapp.databinding.ActivityMainBinding
 import com.naman.segmentationsampleapp.db.app_db.AppDb
@@ -42,7 +43,18 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel = MainVMFactory(repo).create(MainViewModel::class.java)
 
 
-        myFragment = ColorStyleFragment()
+        myFragment = ColorStyleFragment(
+            options = listOf(
+                ColorStyleOption.Segment,
+                ColorStyleOption.MergedSegment,
+                ColorStyleOption.Gradient
+            )
+        )
+        myFragment?.let {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.segmentation_container, it)
+            transaction.commitNow()
+        }
         /**
          * For Bar Preview*/
 
@@ -50,12 +62,13 @@ class MainActivity : AppCompatActivity() {
             colorStyle
         }
         myFragment?.setOnColorStyleChange {
+            Log.d("COlorstyleIs","$it")
             mainActivityViewModel?.updateColorStyle(it)
         }
         myFragment?.setDataForSegmentsPreview {
             tempArrayRangeBar
         }
-        /**
+        /***
          * For ColorHistory
          * */
         myFragment?.setColorHistory {
@@ -66,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             arrayRangeBar
         }
 
-        myFragment?.setOnSegmentValueChangeListener         { rangeBarArrays, newColor ->
+        myFragment?.setOnSegmentValueChangeListener { rangeBarArrays, newColor ->
             mainActivityViewModel?.clearColorTable()
             val rangeBarDtoList = rangeBarArrays.map { rb ->
                 RangeBarDto(
@@ -146,13 +159,14 @@ class MainActivity : AppCompatActivity() {
         /**
          * View model Observers
          * */
+
         mainActivityViewModel?.settings?.observe(this) {
             Log.d("Observer4", "$it")
             if (it.isNotEmpty()) {
                 colorStyle = it[0].colorStyle
                 myFragment?.setTextToDropDown(it[0].colorStyle)
-                myFragment?.loadBarViewFragment()
-                myFragment?.loadColorStyleInputFragment()
+                myFragment?.notifyBarPreview()
+                myFragment?.notifyColorStyleInputFragment()
 
             }
 
@@ -212,20 +226,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
 
 
-/*  binding?.btnDetachPreview?.setOnClickListener {
-
-         myFragment?.dettachPreview()
-     }
-     binding?.btnDetachSegment?.setOnClickListener {
-         myFragment?.dettachColorStyleInput()
-     }
-     binding?.btnAttachPreview?.setOnClickListener {
-         myFragment?.attachBarPreview()
-     }
-     binding?.btnAttachSegment?.setOnClickListener {
-         myFragment?.attachColorStyleFragment()
-     }*/

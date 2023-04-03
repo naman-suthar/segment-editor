@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/preview_parent_container"
-    tools:context=".bar_preview.BarLivePreviewFragment">
+    tools:context=".bar_preview.SegmentLivePreviewFragment">
 
 </FrameLayout>

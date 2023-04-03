@@ -11,13 +11,16 @@ import app.ijp.segmentation_editor.databinding.FragmentGradientBarPreviewBinding
 import app.ijp.segmentation_editor.model.RangeBarArray
 
 
-class MergedGradientPreview : Fragment() {
+class MergedGradientSegmentsPreview : Fragment() {
     private var binding: FragmentGradientBarPreviewBinding? = null
     private var vertex = 10f
     private var arrayList: MutableList<RangeBarArray> = mutableListOf()
     private var colorsArray = intArrayOf(Color.GRAY, Color.YELLOW, Color.BLACK)
     private var floatColorsArray = floatArrayOf(0f,0.25f,0.67f)
-    fun updateList(list: MutableList<RangeBarArray>) {
+
+    /**
+     * This will insert this new list in preview*/
+    fun updateGradientViewFromProvidedList(list: MutableList<RangeBarArray>) {
         arrayList = list
         if (arrayList.size > 1){
             vertex = arrayList[0].end.toFloat()
@@ -52,7 +55,6 @@ class MergedGradientPreview : Fragment() {
         binding?.previewGradient?.updateVertex(vertex)
         /**
          * size of both Array should be same*/
-
         binding?.previewGradient?.updateColors(colorsArray,floatColorsArray)
         return binding?.root
     }

@@ -1,7 +1,7 @@
 package app.ijp.segmentation_editor.segment_option
 
-import android.app.ActionBar
 import android.os.Bundle
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,9 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import app.ijp.segmentation_editor.R
-import app.ijp.segmentation_editor.databinding.EachRangebarBinding
 import app.ijp.segmentation_editor.databinding.FragmentSegmentRangeBarsBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import app.ijp.segmentation_editor.model.RangeBarArray
@@ -18,32 +19,42 @@ import kotlin.math.abs
 
 const val LEFT_POSITION = 0
 const val RIGHT_POSITION = 1
-class SegmentRangeBarsFragment : Fragment(), CustomComponentsCallback {
+/**
+ * This Fragment is parent of sliders and holds lists the sliders
+ * for this It requires List of RangeBar array which it get from the Activity/Parent Fragment of app from setArrayList() function (Mandatory)
+ * It also requires colorHistory to pass colorHistory to the sliders which it gets from setColorHistoryProvider() function (Optional)
+ * It gives to callback function which it gets from sliders and it passes it to parent fragment or activity from setOnValueChange() and setOnSliderChange() both are mandatory
+ * */
+
+
+class SegmentRangeBarsFragment : Fragment() {
+
+
     private var arrayList = mutableListOf<RangeBarArray>()
     private var alertDialog: AlertDialog? = null
     private var onValueChange: ((MutableList<RangeBarArray>, Int?) -> Unit)? = null
     private var onSLiderChange: ((MutableList<RangeBarArray>) -> Unit)? = null
-    private var onValueTextClick: ((Int, Int) -> Unit)? = null
     private var binding: FragmentSegmentRangeBarsBinding? = null
-    private var colorHistory: List<Int>? = null
     private var getColorHistory: (() -> List<Int>?)? = null
     private var getArrayList: (() -> MutableList<RangeBarArray>)? = null
 
+    /**
+     * This is used as Temporary State holder for Sliders
+     * and it holds Copy of RangeBarArray and perform temporary changes
+     * It is internal state holder we don't have to define or declare from outside
+     * */
+    private var tempRangeBarArray = mutableListOf<RangeBarArray>()
+
+    /**
+     * This function is sets "getArrayList" which is used to draw the rangeBars*/
     fun setArrayList(arrayListProvider: (() -> MutableList<RangeBarArray>)?) {
         getArrayList = arrayListProvider
     }
 
+    /**
+     * This function sets "getColorHistory" which is passed to RangebarItemComponent For ColorDialog*/
     fun setColorHistoryProvider(colorHistoryProvider: (() -> List<Int>?)?) {
         getColorHistory = colorHistoryProvider
-        /*colorHistory = colorHistoryProvider
-        arrayList.let {
-            addComponents(arrayList)
-
-        }*/
-    }
-
-    fun setTextValueClickListener(onValueTextClicked: ((Int, Int) -> Unit)) {
-        onValueTextClick = onValueTextClicked
     }
 
     override fun onCreateView(
@@ -52,112 +63,55 @@ class SegmentRangeBarsFragment : Fragment(), CustomComponentsCallback {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentSegmentRangeBarsBinding.inflate(inflater, container, false)
+
+        defaultColor = try {
+            val typedValue = TypedValue()
+            context?.theme?.resolveAttribute(android.R.attr.colorPrimary, typedValue, true)
+            val primaryColor = typedValue.data
+            primaryColor
+        } catch (e: Exception) {
+            context?.let {
+                ContextCompat.getColor(
+                    it,
+                    com.google.android.material.R.color.design_default_color_primary
+                )
+            } ?: 0
+        }
+
         getArrayList?.let {
-            it()?.let { list ->
-                //Creating the rangeBars from database
-                //array to remove duplicate values
+            it().let { list ->
                 arrayList = list
-                if (list.isNotEmpty()) addComponents(list)
+                if (list.isNotEmpty()) drawBarsToUi()
             }
         }
 
         return binding?.root
     }
 
+    /**
+     * This function we gets from parent and now we call it when rangeSlider gives us callback
+     * RangeBarComponent.setOnSliderMovementCompletion()
+     * */
     fun setOnValueChange(onValueChangeFunction: ((MutableList<RangeBarArray>, Int?) -> Unit)?) {
         onValueChange = onValueChangeFunction
     }
 
+    /**
+     * This function we gets from parent and now we call it when rangeSlider gives us callback
+     * RangeBarComponent.setOnSliderChangingLive()
+     * */
     fun setOnSliderChange(onSliderChangeFunction: ((MutableList<RangeBarArray>) -> Unit)?) {
         onSLiderChange = onSliderChangeFunction
     }
 
-    fun updateNewList() {
+    fun updateSliders() {
         getArrayList?.let {
-            it()?.let { list ->
+            it().let { list ->
                 arrayList = list
-                addComponents(list)
-
+                drawBarsToUi()
             }
         }
-//        arrayList = list
 
-    }
-
-    fun addRangeBarListItem(rangeBarItem: RangeBarArray) {
-        arrayList.add(rangeBarItem)
-        this.view?.invalidate()
-    }
-
-    fun getCurrentList(): MutableList<RangeBarArray> {
-        return arrayList
-    }
-
-    private fun addComponents(list: MutableList<RangeBarArray>) {
-        binding?.rangeBarComponent?.removeAllViews()
-        val lp = ActionBar.LayoutParams(
-            ActionBar.LayoutParams.MATCH_PARENT,
-            ActionBar.LayoutParams.WRAP_CONTENT
-        )
-        for (i in list) {
-            val newCompo = binding?.rangeBarComponent?.let {
-                context?.let { it2 ->
-                    CustomComponent(
-                        it2,
-                        this,
-                        requireActivity().supportFragmentManager,
-                        binding?.rangeBarComponent!!,
-                        arrayList,
-                        getColorHistory
-                    )
-                }
-
-            }
-            newCompo?.setStartText(i.start)
-            newCompo?.setEndText(i.end)
-            newCompo?.setProgress(i.start, i.end)
-            val newCompoBinding: EachRangebarBinding? =
-                newCompo?.let { EachRangebarBinding.bind(it) }
-            if (i.start == 0) {
-                newCompoBinding?.thicknessSliderCustom?.visibility = View.VISIBLE
-                newCompoBinding?.rangeBar?.visibility = View.INVISIBLE
-            }
-            newCompo?.setColor(i.color)
-            newCompo?.let { nc ->
-                binding?.rangeBarComponent?.addView(nc, lp)
-            }
-        }
-    }
-
-
-    override fun onValueChanged(arrayList: MutableList<RangeBarArray>, color: Int?) {
-
-        onValueChange?.let {
-            it(arrayList, color)
-        }
-    }
-
-    override fun onSliderChange(temp: MutableList<RangeBarArray>) {
-
-        onSLiderChange?.let {
-            it(temp)
-        }
-
-    }
-
-    override fun onGridColorChange(color: IntArray) {
-
-    }
-
-    override fun deleteGridColor(cList: ArrayList<String>) {
-
-    }
-
-    override fun onSetManuallyClicked(index: Int, position: Int) {
-        showAlertDialog(index, position)
-        /* onValueTextClick?.let {
-             it(index,position)
-         }*/
     }
 
     private fun showAlertDialog(index: Int, position: Int) {
@@ -181,71 +135,27 @@ class SegmentRangeBarsFragment : Fragment(), CustomComponentsCallback {
         val positiveButton = alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)
         positiveButton?.setOnClickListener {
             val value = etRangeValue.text.toString().toInt()
-            if (value < 5 || value in 95..100) {
-                Toast.makeText(requireContext(), "Minimun 5 length required", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (value > 100) {
-                Toast.makeText(requireContext(), "Enter Valid Input", Toast.LENGTH_SHORT).show()
-            } else {
+            validateAndUpdateRangeBarArray(index,position,value)
 
-                if (index == arrayList.size - 1 && position == RIGHT_POSITION) {
-                    /**
-                     * Last value 100 updated
-                     * Create New if it is between last rangebar start and end
-                     * else UpdateForLast will update the existing RangeBar
-                     * */
-                    if (value in arrayList[index].start..arrayList[index].end) {
-                        val isCorrect = createNewBar(value, index)
-                        if (isCorrect.first) {
-                            /** If successFully Arranged then Update in ViewModel
-                             * */
+        }
+    }
 
-                            onValueChange?.let {
-                                it(arrayList, null)
-                            }
-                            alertDialog?.dismiss()
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "Already ${isCorrect.second} in the list Minimum 5 length required",
-                                Toast.LENGTH_SHORT
-                            ).show()
+    private fun validateAndUpdateRangeBarArray(index: Int, position: Int, value: Int) {
+        if (value < 5 || value in 95..100) {
+            Toast.makeText(requireContext(), "Minimun 5 length required", Toast.LENGTH_SHORT)
+                .show()
+        } else if (value > 100) {
+            Toast.makeText(requireContext(), "Enter Valid Input", Toast.LENGTH_SHORT).show()
+        } else {
 
-                        }
-                    } else {
-                        val isCorrect = updateForLast(value, position)
-                        if (isCorrect.first) {
-                            /** If successFully Arranged then Update in ViewModel
-                             * */
-
-                            onValueChange?.let {
-                                it(arrayList, null)
-                            }
-                            alertDialog?.dismiss()
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "Already ${isCorrect.second} in the list Minimum 5 length required",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                } else {
-                    val isCorrect = when (position) {
-                        /**
-                         * First find the Index of Range in between where input value lies and then change according start and ends of corresponding rangebars
-                         * @param foundAtPos inside checkLeftAndUpdate and checkRightAndUpdate
-                         * In LeftPosition will change some above or below rangebars values and itself become the start of new RangeBar or updated Rangebar
-                         * Similarly Right Position will change some above or below rangebars values and become the end of updated Rangebar
-                         *
-                         **/
-
-                        LEFT_POSITION -> checkLeftAndUpdate(value, index)
-                        RIGHT_POSITION -> checkRightAndUpdate(value, index)
-                        else -> {
-                            Pair(false, -2)
-                        }
-                    }
+            if (index == arrayList.size - 1 && position == RIGHT_POSITION) {
+                /**
+                 * Last value 100 updated
+                 * Create New if it is between last rangebar start and end
+                 * else UpdateForLast will update the existing RangeBar
+                 * */
+                if (value in arrayList[index].start..arrayList[index].end) {
+                    val isCorrect = createNewBar(value, index)
                     if (isCorrect.first) {
                         /** If successFully Arranged then Update in ViewModel
                          * */
@@ -262,13 +172,137 @@ class SegmentRangeBarsFragment : Fragment(), CustomComponentsCallback {
                         ).show()
 
                     }
-                }
+                } else {
+                    val isCorrect = updateForLast(value, position)
+                    if (isCorrect.first) {
+                        /** If successFully Arranged then Update in ViewModel
+                         * */
 
+                        onValueChange?.let {
+                            it(arrayList, null)
+                        }
+                        alertDialog?.dismiss()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Already ${isCorrect.second} in the list Minimum 5 length required",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+                val isCorrect = when (position) {
+                    /**
+                     * First find the Index of Range in between where input value lies and then change according start and ends of corresponding rangebars
+                     * @param foundAtPos inside checkLeftAndUpdate and checkRightAndUpdate
+                     * In LeftPosition will change some above or below rangebars values and itself become the start of new RangeBar or updated Rangebar
+                     * Similarly Right Position will change some above or below rangebars values and become the end of updated Rangebar
+                     *
+                     **/
+
+                    LEFT_POSITION -> checkLeftAndUpdate(value, index)
+                    RIGHT_POSITION -> checkRightAndUpdate(value, index)
+                    else -> {
+                        Pair(false, -2)
+                    }
+                }
+                if (isCorrect.first) {
+                    /** If successFully Arranged then Update in ViewModel
+                     * */
+                    onValueChange?.let {
+                        it(arrayList, null)
+                    }
+                    alertDialog?.dismiss()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Already ${isCorrect.second} in the list Minimum 5 length required",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
             }
 
         }
     }
 
+    private fun drawBarsToUi() {
+        binding?.rangeBarComponent?.removeAllViews()
+        arrayList.forEach { rangeBar ->
+            val rangeBarView =
+                RangeBarSliderCustomComponent(requireContext(), childFragmentManager, rangeBar, getColorHistory)
+
+            rangeBarView.getTempArray {
+                tempRangeBarArray
+            }
+
+            rangeBarView.setOnSliderMovementCompletion { index, position, value ->
+                /**
+                 * index -> Index of the Slider where value ha been changed or slider movement performed
+                 * position -> It is Thumb Position of Slider i.e. LEFT or RIGHT
+                 * value -> It is the changed value on that position (ex. If right thumb is moved from 21 to 80 then value here is 80
+                 * */
+
+                updateAndReArrangeRangeBarArray(index, position, value.toInt())
+
+                /**
+                 * Update temporary Array as copy of updated Range BarArray
+                 * */
+                tempRangeBarArray.clear()
+                arrayList.forEach { ra ->
+                    tempRangeBarArray.add(
+                        RangeBarArray(
+                            ra.start,
+                            ra.end,
+                            ra.color
+                        )
+                    )
+                }
+                /**
+                 * Here now since rangeBarArray is changed So we need to reRender */
+                drawBarsToUi()
+                onValueChange?.let {
+                    it(arrayList,null)
+                }
+            }
+            rangeBarView.setOnSliderChangingLive { index, position, value ->
+                /**First update the Temporary Array of Internal state */
+                when (position) {
+                    LEFT_POSITION -> {
+                        updateTemporaryArrayFromLeftPosition(value.toInt(), index)
+                    }
+                    else -> {
+                        updateTemporaryArrayFromRightPosition(value.toInt(), index)
+                    }
+                }
+                /**Then Refresh the Text and values of RangeBarComponents*/
+                binding?.rangeBarComponent?.children?.forEach {
+                    (it as RangeBarSliderCustomComponent).notifyRangeBarComponentUIForUpdateTextIconsAndValues()
+                }
+                onSLiderChange?.let {
+                    /**This function will be set in activity to just update the array for preview*/
+                    it(tempRangeBarArray)
+                }
+            }
+            rangeBarView.setOnValueTextItemClicked { index, position ->
+                showAlertDialog(index,position)
+            }
+            rangeBarView.setOnColorChangedFromRangeBar { index, newColor ->
+                arrayList[index].color = newColor
+                onValueChange?.let {
+                    /**
+                     * This function will be set in activity to save the new color and add to history*/
+                    it(arrayList,newColor)
+                }
+            }
+            binding?.rangeBarComponent?.addView(rangeBarView)
+        }
+    }
+
+
+    /**This handles the case when last range bar is not going to create New but Update Existing
+     * basically the value is not between the start and end of the last element
+     * then it will update the Array accordingly And it is called by Dialog box*/
     private fun updateForLast(value: Int, position: Int): Pair<Boolean, Int> {
         val tempArray = mutableListOf<RangeBarArray>()
 
@@ -300,18 +334,6 @@ class SegmentRangeBarsFragment : Fragment(), CustomComponentsCallback {
         return Pair(true, -1)
     }
 
-    private fun createNewBar(value: Int, index: Int): Pair<Boolean, Int> {
-        val tempArr = mutableListOf<RangeBarArray>()
-        arrayList.forEach { ra ->
-            tempArr.add(RangeBarArray(ra.start, ra.end, ra.color))
-        }
-        if (abs(tempArr[index].start - value) <= 5) return Pair(false, tempArr[index].start)
-        tempArr[index].end = value
-        tempArr.add(RangeBarArray(value + 1, 100, defaultColor))
-
-        arrayList = tempArr
-        return Pair(true, -1)
-    }
 
     private fun checkRightAndUpdate(value: Int, index: Int): Pair<Boolean, Int> {
 
@@ -398,7 +420,9 @@ class SegmentRangeBarsFragment : Fragment(), CustomComponentsCallback {
                 return Pair(false, tempArray[position - 1].start)
             }
             tempArray[position].start = value
-            tempArray[position - 1].end = value - 1
+            if (value == 0){
+                tempArray[position - 1].end = 0
+            }else tempArray[position - 1].end = value - 1
         }
         if (foundAtPos < position) {
             if (abs(tempArray[foundAtPos].start - (value)) <= 5) {
@@ -439,4 +463,417 @@ class SegmentRangeBarsFragment : Fragment(), CustomComponentsCallback {
         arrayList = ansTemp as MutableList<RangeBarArray>
         return Pair(true, -1)
     }
+    private fun updateAndReArrangeRangeBarArray(index: Int, position: Int, value: Int) {
+
+        if (value in 1.. 5 || value in 95..99) {
+            Toast.makeText(requireContext(), "Minimun 5 length required", Toast.LENGTH_SHORT)
+                .show()
+        } else if (value > 100) {
+            Toast.makeText(requireContext(), "Enter Valid Input", Toast.LENGTH_SHORT).show()
+        } else {
+
+            if (index == arrayList.size - 1 && position == RIGHT_POSITION) {
+                /**
+                 * Last value 100 updated
+                 * Create New if it is between last rangebar start and end
+                 * else UpdateForLast will update the existing RangeBar
+                 * */
+                if (value in arrayList[index].start - 5..arrayList[index].end - 5) {
+                    val isCorrect = createNewBar(value, index)
+                    if (!isCorrect.first) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Already ${isCorrect.second} in the list Minimum 5 length required",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                } else {
+                    val isCorrect = updateRangeBarForLastSliderCase(value, position)
+                    if (!isCorrect.first) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Already ${isCorrect.second} in the list Minimum 5 length required",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        /*    onValueChange?.let {
+                                it(rangeBarArray, null)
+                            }
+                            alertDialog?.dismiss()*/
+                    }
+                }
+            } else {
+                val isCorrect = when (position) {
+                    /**
+                     * First find the Index of Range in between where input value lies and then change according start and ends of corresponding rangebars
+                     * @param foundAtPos inside checkLeftAndUpdate and checkRightAndUpdate
+                     * In LeftPosition will change some above or below rangebars values and itself become the start of new RangeBar or updated Rangebar
+                     * Similarly Right Position will change some above or below rangebars values and become the end of updated Rangebar
+                     *
+                     **/
+
+                    LEFT_POSITION -> checkRangeBarArrayForLeftThumbAndUpdate(value, index)
+                    RIGHT_POSITION -> checkRangeBarForRightThumbAndUpdate(value, index)
+
+                    else -> {
+                        Pair(false, -2)
+                    }
+                }
+                drawBarsToUi()
+                if (!isCorrect.first) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Already ${isCorrect.second} in the list Minimum 5 length required",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+            }
+
+        }
+    }
+
+
+    /**
+     * This function handle case when the last slider is not creating new Slider and value is affecting other existing sliders*/
+    private fun updateRangeBarForLastSliderCase(value: Int, position: Int): Pair<Boolean, Int> {
+        val tempArray = mutableListOf<RangeBarArray>()
+
+        var foundAtPos: Int = -1
+        arrayList.forEachIndexed { i, ra ->
+            tempArray.add(RangeBarArray(ra.start, ra.end, ra.color))
+            if (value in ra.start..ra.end) {
+                foundAtPos = i
+            }
+        }
+
+        if (abs(tempArray[foundAtPos].start - value) in 1..5) return Pair(
+            false,
+            tempArray[foundAtPos].start
+        )
+        if (abs(value + 1 - 100) < 5) return Pair(false, value + 1)
+        tempArray[foundAtPos].end = value
+        tempArray[foundAtPos + 1].start = value + 1
+        tempArray[foundAtPos + 1].end = 100
+        var temp = foundAtPos + 1
+        while (temp + 1 < tempArray.size) {
+            tempArray[temp + 1].end = 0
+            temp++
+        }
+        val ansTemp = tempArray.filter { it.end != 0 }
+
+        arrayList = ansTemp as MutableList<RangeBarArray>
+
+        return Pair(true, -1)
+    }
+
+    /**This handles the special case of last Slider when its value is between its own start and end it means
+     * It breaks down into two sliders and creates a new Slider*/
+
+    private fun createNewBar(value: Int, index: Int): Pair<Boolean, Int> {
+        val tempArr = mutableListOf<RangeBarArray>()
+        arrayList.forEach { ra ->
+            tempArr.add(RangeBarArray(ra.start, ra.end, ra.color))
+        }
+        if (abs(tempArr[index].start - value) <= 5) return Pair(
+            false,
+            tempArr[index].start
+        )
+        tempArr[index].end = value
+        tempArr.add(RangeBarArray(value + 1, 100, defaultColor))
+
+        arrayList = tempArr
+        return Pair(true, -1)
+    }
+
+    private fun checkRangeBarForRightThumbAndUpdate(value: Int, index: Int): Pair<Boolean, Int> {
+        val tempArray = mutableListOf<RangeBarArray>()
+        var foundAtPos: Int = -1
+
+        arrayList.forEachIndexed { i, ra ->
+            tempArray.add(RangeBarArray(ra.start, ra.end, ra.color))
+            if (value in ra.start..ra.end) {
+                foundAtPos = i
+            }
+        }
+        if (foundAtPos == index) {
+
+            if (abs(tempArray[index].start - value) in 1..5) {
+
+                return Pair(
+                    false,
+                    tempArray[index].start
+                )
+            }
+
+            if (abs(tempArray[index + 1].end - value) in 1..5) {
+
+                return Pair(
+                    false,
+                    tempArray[index + 1].end
+                )
+            }
+            if (abs(tempArray[index].start - value) ==0) {
+               tempArray[index].end = 0
+                tempArray[index+1].start = tempArray[index].start
+            }else{
+                tempArray[index].end = value
+                tempArray[index + 1].start = value + 1
+            }
+
+        }
+        if (foundAtPos < index) {
+            if (abs(tempArray[foundAtPos].start - value) in 1..5) {
+                return Pair(
+                    false,
+                    tempArray[foundAtPos].start
+                )
+            }
+
+            if (abs(tempArray[index + 1].end - value) in 1..5) {
+                return Pair(
+                    false,
+                    tempArray[index + 1].end
+                )
+            }
+
+            tempArray[foundAtPos].end = value
+            tempArray[index + 1].start = value + 1
+            var temp = foundAtPos
+            while (temp + 1 <= index) {
+                tempArray[temp + 1].end = 0
+                temp++
+            }
+        }
+        if (foundAtPos > index) {
+            if (abs(tempArray[index].start - value) in 1..5) {
+                return Pair(
+                    false,
+                    tempArray[index].start
+                )
+            }
+
+            if (abs(tempArray[foundAtPos].end - value) in 1..5) {
+                return Pair(
+                    false,
+                    tempArray[foundAtPos].end
+                )
+            }
+
+            tempArray[index].end = value
+            if (value >= 100) {
+                tempArray[foundAtPos].start = 100
+            } else {
+                tempArray[foundAtPos].start = value + 1
+            }
+
+
+            var temp = index
+            while (temp + 1 < foundAtPos) {
+                tempArray[temp + 1].end = 0
+                temp++
+            }
+        }
+        val ansTemp =
+            tempArray.filter { it.end != 0 }.filter { it.end - it.start > 0 }
+
+        arrayList = ansTemp as MutableList<RangeBarArray>
+
+        return Pair(true, -1)
+    }
+
+    private fun checkRangeBarArrayForLeftThumbAndUpdate(value: Int, position: Int): Pair<Boolean, Int> {
+        val tempArray = mutableListOf<RangeBarArray>()
+
+        var foundAtPos: Int = -1
+        arrayList.forEachIndexed { i, ra ->
+            tempArray.add(RangeBarArray(ra.start, ra.end, ra.color))
+            if (value in ra.start..ra.end) {
+                foundAtPos = i
+            }
+        }
+
+        if (foundAtPos == position) {
+            if (abs(tempArray[position].end - value) in 1..5) {
+                return Pair(false, tempArray[position].end)
+            }
+            if (abs(tempArray[position - 1].start - value + 1) in 1..5) {
+                return Pair(false, tempArray[position - 1].start)
+            }
+            if (abs(tempArray[position].end - value) ==0) {
+                tempArray[position].start = tempArray[position].end
+                tempArray[position-1].end = tempArray[position].end
+            }else{
+                tempArray[position].start = value
+                tempArray[position - 1].end = value
+            }
+
+        }
+        if (foundAtPos < position) {
+            if (abs(tempArray[foundAtPos].start - (value)) in 1..5) {
+                return Pair(false, tempArray[foundAtPos].start)
+            }
+            if (abs(tempArray[position].end - value) in 1.. 5) {
+                return Pair(false, tempArray[position].end)
+            }
+            if (value == 0){
+                tempArray[foundAtPos].end = 0
+            }else{
+                tempArray[foundAtPos].end = value - 1
+            }
+
+            tempArray[position].start = value
+            var temp = foundAtPos
+            while (temp + 1 < position) {
+                tempArray[temp + 1].end = 0
+                temp++
+            }
+        }
+        if (foundAtPos > position) {
+            if (abs(tempArray[foundAtPos].end - value) <= 5) {
+                return Pair(false, tempArray[foundAtPos].end)
+            }
+            tempArray[foundAtPos].start = value
+            if (position - 1 >= 0) {
+                if (abs(tempArray[position - 1].start - value - 1) <= 5) {
+                    return Pair(false, tempArray[position - 1].start)
+                }
+                tempArray[position - 1].end = value - 1
+            }
+
+            var temp = position
+            while (temp < foundAtPos) {
+                tempArray[temp].end = 0
+                temp++
+            }
+        }
+        val ansTemp = tempArray.filter { it.end != 0 }.filter { it.end - it.start >0 }
+        arrayList = ansTemp as MutableList<RangeBarArray>
+        return Pair(true, -1)
+    }
+
+
+    /**
+     * The Functions are to Update the Temporary Array*/
+    private fun updateTemporaryArrayFromRightPosition(value: Int, index: Int) {
+        val tempArray = mutableListOf<RangeBarArray>()
+        var foundAtPos: Int = -1
+        arrayList.forEachIndexed { i, ra ->
+            tempArray.add(RangeBarArray(ra.start, ra.end, ra.color))
+            if (value in ra.start..ra.end) {
+                foundAtPos = i
+            }
+        }
+        if (foundAtPos == index) {
+
+            tempArray[index].end = value
+            if (index + 1 < tempArray.size) {
+                if (value >= 100) {
+                    tempArray[index + 1].start = 100
+                } else {
+                    tempArray[index + 1].start = value + 1
+                }
+            }
+
+        }
+        if (foundAtPos < index) {
+            tempArray[foundAtPos].end = value
+            if (value >= 100) {
+                tempArray[index + 1].start = 100
+            } else {
+                tempArray[index + 1].start = value + 1
+            }
+
+            var temp = foundAtPos
+            while (temp + 1 <= index) {
+                tempArray[temp + 1].end = 0
+                temp++
+            }
+        }
+        if (foundAtPos > index) {
+            tempArray[index].end = value
+            if (value >= 100) {
+                tempArray[foundAtPos].start = 100
+            } else {
+                tempArray[foundAtPos].start = value + 1
+            }
+
+            var temp = index
+            while (temp + 1 < foundAtPos) {
+                tempArray[temp + 1].start = tempArray[temp + 1].end
+                temp++
+            }
+        }
+
+        tempRangeBarArray = tempArray
+    }
+
+    private fun updateTemporaryArrayFromLeftPosition(value: Int, position: Int) {
+        val tempArray = mutableListOf<RangeBarArray>()
+
+        var foundAtPos: Int = -1
+        arrayList.forEachIndexed { i, ra ->
+            tempArray.add(RangeBarArray(ra.start, ra.end, ra.color))
+            if (value in ra.start..ra.end) {
+                foundAtPos = i
+            }
+        }
+
+        if (foundAtPos == position) {
+            tempArray[position].start = value
+            if (position - 1 >= 0 && value>0) {
+                tempArray[position - 1].end = value - 1
+            }
+        }
+        if (foundAtPos < position) {
+            if (value==0){
+                tempArray[position].start = 0
+                tempArray[foundAtPos].end = 0
+            } else {
+                tempArray[foundAtPos].end = value - 1
+                tempArray[position].start = value
+            }
+
+
+            var temp = foundAtPos
+            while (temp + 1 < position) {
+                tempArray[temp + 1].end = tempArray[temp + 1].start
+                temp++
+            }
+        }
+
+        tempRangeBarArray = tempArray
+    }
 }
+
+/*  private fun addComponents(list: MutableList<RangeBarArray>) {
+      binding?.rangeBarComponent?.removeAllViews()
+      val lp = ActionBar.LayoutParams(
+          ActionBar.LayoutParams.MATCH_PARENT,
+          ActionBar.LayoutParams.WRAP_CONTENT
+      )
+      for (i in list) {
+          val newCompo = binding?.rangeBarComponent?.let {
+              context?.let { it2 ->
+                  CustomComponent(
+                      it2,
+                      requireActivity().supportFragmentManager,
+                     i,
+                      getColorHistory
+                  )
+              }
+
+          }
+
+          val newCompoBinding: EachRangebarBinding? =
+              newCompo?.let { EachRangebarBinding.bind(it) }
+          if (i.start == 0) {
+              newCompoBinding?.thicknessSliderCustom?.visibility = View.VISIBLE
+              newCompoBinding?.rangeBar?.visibility = View.INVISIBLE
+          }
+          newCompo?.setColor(i.color)
+          newCompo?.let { nc ->
+              binding?.rangeBarComponent?.addView(nc, lp)
+          }
+      }
+  }*/

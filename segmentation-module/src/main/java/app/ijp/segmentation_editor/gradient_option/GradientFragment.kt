@@ -15,7 +15,6 @@ import app.ijp.colorpickerdialog.OnColorChangedListener
 import app.ijp.segmentation_editor.R
 import app.ijp.segmentation_editor.databinding.FragmentGradientBinding
 import app.ijp.segmentation_editor.model.GridData
-import app.ijp.segmentation_editor.model.RangeBarArray
 import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback
 import app.ijp.segmentation_editor.multi_color_dialog.MultiColorDialog
 
@@ -31,14 +30,15 @@ class GradientFragment : Fragment(), CustomComponentsCallback {
     private var onDeleteGridColor:((ArrayList<String>) -> Unit)? = null
     private var getColorHistory: (()->List<Int>?)? = null
     private var getGridData: (()->List<GridData>?)? = null
+
+    /**
+     * It gives us colorHistory for Single color dialog */
     fun setColorHistoryProvider(colorHistoryProvider: (() -> List<Int>?)?){
         getColorHistory = colorHistoryProvider
-        /*colorHistory = colorHistoryProvider
-        arrayList.let {
-            addComponents(arrayList)
-
-        }*/
     }
+
+    /**
+     * It gives us the GridData from the Parent*/
     fun setGridData(gridDataProvider: (()->List<GridData>?)?){
         getGridData = gridDataProvider
     }
@@ -67,10 +67,10 @@ class GradientFragment : Fragment(), CustomComponentsCallback {
         }
 
     }
-    fun setOnGridColorChange(colorChange: ((IntArray)->Unit)?){
+    fun setOnGridColorChangeFromMultiColorDialog(colorChange: ((IntArray)->Unit)?){
         onGridColorChange = colorChange
     }
-    fun setOnColorChange(colorChange: ((ArrayList<String>,Int)-> Unit)?){
+    fun setOnColorChangeFromSingleColorDialog(colorChange: ((ArrayList<String>, Int)-> Unit)?){
         onColorChange = colorChange
         this.view?.invalidate()
     }
@@ -105,13 +105,7 @@ class GradientFragment : Fragment(), CustomComponentsCallback {
                             val clr = "#" + Integer.toHexString(color).substring(2)
                             gridColorList.add(clr)
                             onColorChange?.let { it1 -> it1(gridColorList,color) }
-                          /*  mediaBarViewModel.insertGridColor(
-                                GridData(
-                                    0,
-                                    gridColorList.size,
-                                    Color.parseColor(clr)
-                                )
-                            )*/
+
                         }
 
 
@@ -149,7 +143,6 @@ class GradientFragment : Fragment(), CustomComponentsCallback {
                     Color.parseColor(gridColorList[position]),getColorHistory,
                     object : OnColorChangedListener {
                         override fun colorChanged(color: Int) {
-                            //Log.v("Color Vals","$color")
                             val clr = "#" + Integer.toHexString(color).substring(2)
                             gridColorList[position] = clr
                             onColorChange?.let { it(gridColorList,color) }
@@ -161,41 +154,11 @@ class GradientFragment : Fragment(), CustomComponentsCallback {
 
         }
 
-       /* mediaBarViewModel.gridData.observe(requireActivity(), Observer {
-            gridColorList.clear()
-            //Log.d("MAN", "${it}")
-            val temp = ArrayList<GridData>()
-            for (i in it) {
-                temp.add(i)
-            }
-            val temp2 = temp.sortedWith(compareBy { it.seqNumber })
-            for (i in temp2) {
-                gridColorList.add("#" + Integer.toHexString(i.gridColor).substring(2))
-            }
-
-
-            val gAdapter = context?.let { it1 ->
-                GridAdapter(
-                    it1,
-                    gridColorList,
-                    this
-
-                )
-            }
-            (binding?.gridGradient as GridView).adapter = gAdapter
-        })*/
         return binding?.root
     }
 
-    override fun onValueChanged(arrayList: MutableList<RangeBarArray>, color: Int?) {
-
-    }
-
-    override fun onSliderChange(temp: MutableList<RangeBarArray>) {
-
-    }
-
     override fun onGridColorChange(color: IntArray) {
+        /**MultiColor Dialog*/
         onGridColorChange?.let{
             it(color)
         }
@@ -205,6 +168,4 @@ class GradientFragment : Fragment(), CustomComponentsCallback {
         onDeleteGridColor?.let { it(cList) }
     }
 
-    override fun onSetManuallyClicked(index: Int, position: Int) {
-    }
 }

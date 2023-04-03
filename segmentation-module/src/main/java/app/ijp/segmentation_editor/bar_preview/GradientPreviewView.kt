@@ -6,6 +6,9 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 
+/**
+ * This is Canvas View used in Gradient Preview
+ * */
 class GradientPreviewView(context: Context, attributeSet: AttributeSet): View(context,attributeSet) {
     var colorArray = intArrayOf(Color.BLUE, Color.RED, Color.GREEN)
     var colorPositionArray = floatArrayOf(0f,0.33f,0.67f)
