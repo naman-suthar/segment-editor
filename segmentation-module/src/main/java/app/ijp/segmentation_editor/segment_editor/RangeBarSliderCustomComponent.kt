@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.segment_option
+package app.ijp.segmentation_editor.segment_editor
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -13,7 +13,7 @@ import app.ijp.colorpickerdialog.ColorDialog
 import app.ijp.colorpickerdialog.OnColorChangedListener
 import app.ijp.segmentation_editor.databinding.EachRangebarBinding
 import com.google.android.material.slider.RangeSlider
-import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
 import kotlin.math.abs
 
 

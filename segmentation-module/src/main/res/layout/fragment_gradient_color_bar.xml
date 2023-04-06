@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bar_preview.GradientPreview">
-<app.ijp.segmentation_editor.bar_preview.GradientPreviewView
+    tools:context=".gradient_preview.GradientPreview">
+<app.ijp.segmentation_editor.gradient_preview.canvas.GradientPreviewView
     android:id="@+id/gradient_color_bar_preview"
     android:layout_width="match_parent"
     android:layout_height="20dp"

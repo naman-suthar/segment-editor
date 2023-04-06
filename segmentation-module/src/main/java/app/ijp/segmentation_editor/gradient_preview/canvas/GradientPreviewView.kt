@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.bar_preview
+package app.ijp.segmentation_editor.gradient_preview.canvas
 
 import android.content.Context
 import android.graphics.*
@@ -6,34 +6,25 @@ import android.util.AttributeSet
 import android.view.View
 
 /**
- * This is View for MergedGradientSegment Bar Preview
+ * This is Canvas View used in Gradient Preview
  * */
-class MergedGradientBar(context: Context, attributeSet: AttributeSet): View(context,attributeSet) {
-    var vertex: Float = 0.10f
-    var colorArray = intArrayOf(Color.BLUE,Color.RED,Color.GREEN)
+class GradientPreviewView(context: Context, attributeSet: AttributeSet): View(context,attributeSet) {
+    var colorArray = intArrayOf(Color.BLUE, Color.RED, Color.GREEN)
     var colorPositionArray = floatArrayOf(0f,0.33f,0.67f)
     val path = Path()
 
     /**
-     * This function sets the dynamic vertex of gradient Quadrilateral Three are static
-     * (0.0)   ☀          ☀ (x,y) and the one is dynamic
-     *
-     * (0,100) ☀                ☀ (100,100),
-     * */
-    fun updateVertex(x2: Float){
-       vertex = x2/100f
-       invalidate()
-    }
+     * Update the Gradient Bar for the provided colors and redraw*/
+    fun updateBar(colors: IntArray,colorsPosition: FloatArray){
+        if (colors.size>=2){
+            colorArray = colors
+            colorPositionArray = colorsPosition
+            invalidate()
+        }
 
-    /**This function update the colors of gradient*/
-    fun updateColors(colors: IntArray,colorsPosition: FloatArray){
-        colorArray = colors
-        colorPositionArray = colorsPosition
-        invalidate()
     }
     override fun onDraw(canvas: Canvas?) {
-
-        val gradient = LinearGradient(0f, 0f, 0f, height.toFloat(),
+        val gradient = LinearGradient(0f, 0f, width.toFloat(), 0f,
             colorArray, colorPositionArray, Shader.TileMode.REPEAT)
 
         // Create a paint object with the gradient
@@ -45,7 +36,7 @@ class MergedGradientBar(context: Context, attributeSet: AttributeSet): View(cont
 //        canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
         val x1 = 0f
         val y1 = 0f
-        val x2 = vertex * measuredWidth.toFloat()
+        val x2 = measuredWidth.toFloat()
         val y2 = 0f
         val x3 = measuredWidth.toFloat()
         val y3 = height.toFloat()
@@ -66,5 +57,6 @@ class MergedGradientBar(context: Context, attributeSet: AttributeSet): View(cont
         path.lineTo(x1, y1)
 
         canvas?.drawPath(path,paint)
+
     }
 }

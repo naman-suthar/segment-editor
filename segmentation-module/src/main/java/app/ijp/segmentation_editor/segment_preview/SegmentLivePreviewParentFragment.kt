@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.bar_preview
+package app.ijp.segmentation_editor.segment_preview
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import app.ijp.segmentation_editor.ColorStyleOption
 import app.ijp.segmentation_editor.R
 import app.ijp.segmentation_editor.databinding.FragmentBarLivePreviewBinding
-import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
 
 
 const val BAR_VIEW_HORIZONTAL = 0
@@ -22,7 +22,7 @@ const val BAR_VIEW_GRADIENT = 2
  * 1. ArrayList of rangebars : we get this from setArrayListProvider()
  * 2. ColorStyle type: we get this from setColorStyle()
  * */
-class SegmentLivePreviewFragment : Fragment() {
+class SegmentLivePreviewParentFragment : Fragment() {
     private var binding: FragmentBarLivePreviewBinding? = null
     private var arrayList = mutableListOf<RangeBarArray>()
     private var getColorStyleProvider: (() -> Int?)? = null

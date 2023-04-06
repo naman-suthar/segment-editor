@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.gradient_option
+package app.ijp.segmentation_editor.gradient_editor
 
 import android.content.Context
 import android.graphics.Color
@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import app.ijp.segmentation_editor.R
-import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback
+import app.ijp.segmentation_editor.segment_editor.CustomComponentsCallback
 
 
 

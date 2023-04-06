@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.bar_preview
+package app.ijp.segmentation_editor.segment_preview
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import app.ijp.segmentation_editor.databinding.FragmentGradientBarPreviewBinding
-import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
 
 /**
  * Merged Gradient Preview Fragment

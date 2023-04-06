@@ -1,6 +1,4 @@
-package app.ijp.segmentation_editor.segment_option
-
-import app.ijp.segmentation_editor.model.RangeBarArray
+package app.ijp.segmentation_editor.segment_editor
 
 interface CustomComponentsCallback {
     fun onGridColorChange( color : IntArray)

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bar_preview.MergedSegmentsPreviewFragment">
+    tools:context=".segment_preview.MergedSegmentsPreviewFragment">
 
     <LinearLayout
         android:id="@+id/barViewLayout"

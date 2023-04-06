@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Filter
-import app.ijp.segmentation_editor.bar_preview.SegmentLivePreviewFragment
-import app.ijp.segmentation_editor.gradient_option.GradientFragment
-import app.ijp.segmentation_editor.bar_preview.GradientPreview
+import app.ijp.segmentation_editor.segment_preview.SegmentLivePreviewParentFragment
+import app.ijp.segmentation_editor.gradient_editor.GradientFragment
+import app.ijp.segmentation_editor.gradient_preview.GradientPreview
 import app.ijp.segmentation_editor.databinding.FragmentColorStyleBinding
-import app.ijp.segmentation_editor.model.GridData
-import app.ijp.segmentation_editor.model.RangeBarArray
-import app.ijp.segmentation_editor.segment_option.SegmentRangeBarsFragment
+import app.ijp.segmentation_editor.extras.model.GridData
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
+import app.ijp.segmentation_editor.segment_editor.SegmentRangeBarsFragment
 
 /**
  * It is Main Fragment that holds all fragments
@@ -59,7 +59,7 @@ class ColorStyleFragment(var showPreviewFragment: Boolean = true, var options: L
 
     private var binding: FragmentColorStyleBinding? = null
     private var mySegmentFragment: SegmentRangeBarsFragment? = null
-    private var myPreviewFragment: SegmentLivePreviewFragment? = null
+    private var myPreviewFragment: SegmentLivePreviewParentFragment? = null
 
     private var myGradientFragment: GradientFragment? = null
     private var myGradientPreview: GradientPreview? = null
@@ -310,7 +310,7 @@ class ColorStyleFragment(var showPreviewFragment: Boolean = true, var options: L
         myGradientFragment?.setProviders()
 
         /**For Live Bar Preview -> Segments, Merged Segments, Gradient Segments*/
-        myPreviewFragment = SegmentLivePreviewFragment()
+        myPreviewFragment = SegmentLivePreviewParentFragment()
         myPreviewFragment?.setProviders()
 
         /** For Gradient Live Preview*/
@@ -387,7 +387,7 @@ class ColorStyleFragment(var showPreviewFragment: Boolean = true, var options: L
         this.setOnGridColorDeleted(getNewGradientColorsOnDeletion)
     }
 
-    private fun SegmentLivePreviewFragment.setProviders() {
+    private fun SegmentLivePreviewParentFragment.setProviders() {
         this.setColorStyle(getColorStyle)
         this.setArrayListProvider(getTempArrayProvider)
     }
@@ -464,7 +464,7 @@ class ColorStyleFragment(var showPreviewFragment: Boolean = true, var options: L
             myGradientPreview?.setProviders()
         }
         if (myPreviewFragment == null) {
-            myPreviewFragment = SegmentLivePreviewFragment()
+            myPreviewFragment = SegmentLivePreviewParentFragment()
             myPreviewFragment?.setProviders()
         }
         notifyBarPreview()

@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.gradient_option
+package app.ijp.segmentation_editor.gradient_editor
 
 import android.graphics.Color
 import android.os.Bundle
@@ -14,9 +14,9 @@ import app.ijp.colorpickerdialog.ColorDialog
 import app.ijp.colorpickerdialog.OnColorChangedListener
 import app.ijp.segmentation_editor.R
 import app.ijp.segmentation_editor.databinding.FragmentGradientBinding
-import app.ijp.segmentation_editor.model.GridData
-import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback
-import app.ijp.segmentation_editor.multi_color_dialog.MultiColorDialog
+import app.ijp.segmentation_editor.extras.model.GridData
+import app.ijp.segmentation_editor.segment_editor.CustomComponentsCallback
+import app.ijp.segmentation_editor.extras.multi_color_dialog.MultiColorDialog
 
 
 

@@ -8,7 +8,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import app.ijp.segmentation_editor.ColorStyleFragment
 import app.ijp.segmentation_editor.ColorStyleOption
-import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
 import com.naman.segmentationsampleapp.databinding.ActivityMainBinding
 import com.naman.segmentationsampleapp.db.app_db.AppDb
 import com.naman.segmentationsampleapp.db.app_db.MainRepo
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
          * For Gradient*/
         myFragment?.setDataForGradientPreviewAndEditor {
             listGrid?.map {
-                app.ijp.segmentation_editor.model.GridData(it.id, it.seqNumber, it.gridColor)
+                app.ijp.segmentation_editor.extras.model.GridData(it.id, it.seqNumber, it.gridColor)
             }
         }
 

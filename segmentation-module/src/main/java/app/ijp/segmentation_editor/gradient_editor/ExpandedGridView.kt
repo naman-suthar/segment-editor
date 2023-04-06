@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.gradient_option
+package app.ijp.segmentation_editor.gradient_editor
 
 import android.content.Context
 import android.util.AttributeSet

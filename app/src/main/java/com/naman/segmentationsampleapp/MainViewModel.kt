@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
 import com.naman.segmentationsampleapp.db.app_db.MainRepo
 import com.naman.segmentationsampleapp.db.model.ColorHistory
 import com.naman.segmentationsampleapp.db.model.GridData

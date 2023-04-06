@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.bar_preview
+package app.ijp.segmentation_editor.segment_preview
 
 import android.app.ActionBar
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import app.ijp.segmentation_editor.databinding.FragmentVerticalSegmentBarPreviewBinding
-import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
 
 /**
  * This is Preview fragment for Segments

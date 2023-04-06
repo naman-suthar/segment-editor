@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.model
+package app.ijp.segmentation_editor.extras.model
 
 import android.graphics.Color
 

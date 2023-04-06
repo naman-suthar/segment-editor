@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="16dp"
     android:orientation="vertical"
-    tools:context=".gradient_option.GradientFragment">
+    tools:context=".gradient_editor.GradientFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
-        <app.ijp.segmentation_editor.gradient_option.ExpandedGridView
+        <app.ijp.segmentation_editor.gradient_editor.ExpandedGridView
             android:id="@+id/gridGradient"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

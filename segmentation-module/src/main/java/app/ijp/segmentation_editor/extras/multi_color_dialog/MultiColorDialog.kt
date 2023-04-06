@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.multi_color_dialog
+package app.ijp.segmentation_editor.extras.multi_color_dialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import app.ijp.segmentation_editor.R
-import app.ijp.segmentation_editor.segment_option.CustomComponentsCallback
+import app.ijp.segmentation_editor.segment_editor.CustomComponentsCallback
 import com.google.android.material.slider.Slider
 import com.google.android.material.slider.Slider.OnChangeListener
 

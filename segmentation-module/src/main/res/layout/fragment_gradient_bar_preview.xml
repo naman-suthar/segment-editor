@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".bar_preview.MergedGradientSegmentsPreview">
-<app.ijp.segmentation_editor.bar_preview.MergedGradientBar
+    tools:context=".segment_preview.MergedGradientSegmentsPreview">
+<app.ijp.segmentation_editor.segment_preview.canvas.MergedGradientBarView
     android:id="@+id/preview_gradient"
     android:layout_width="match_parent"
     android:layout_marginTop="16dp"

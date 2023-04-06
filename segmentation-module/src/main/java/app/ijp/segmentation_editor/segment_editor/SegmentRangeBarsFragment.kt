@@ -1,4 +1,4 @@
-package app.ijp.segmentation_editor.segment_option
+package app.ijp.segmentation_editor.segment_editor
 
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +15,7 @@ import androidx.core.view.children
 import app.ijp.segmentation_editor.R
 import app.ijp.segmentation_editor.databinding.FragmentSegmentRangeBarsBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import app.ijp.segmentation_editor.model.RangeBarArray
+import app.ijp.segmentation_editor.extras.model.RangeBarArray
 import kotlin.math.abs
 
 const val LEFT_POSITION = 0
@@ -466,7 +466,7 @@ class SegmentRangeBarsFragment : Fragment() {
                 if (foundAtPos+1<tempArray.size){
                     tempArray[foundAtPos+1].start = value+1
                     tempArray[foundAtPos].end = tempArray[foundAtPos].start
-                    Toast.makeText(requireContext(),"${foundAtPos+1} position slider deleted due to size<5",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Segment at position ${foundAtPos+1} deleted because of small length",Toast.LENGTH_SHORT).show()
                 }else return Pair(false, tempArray[foundAtPos].end)
 
             }
@@ -529,7 +529,7 @@ class SegmentRangeBarsFragment : Fragment() {
                 if (foundAtPos-1>=0){
                     tempArray[foundAtPos-1].end = value-1
                     tempArray[foundAtPos].start = tempArray[foundAtPos].end
-                    Toast.makeText(requireContext(),"${foundAtPos+1} position slider deleted due to size<5",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Segment at position ${foundAtPos+1} deleted because of small length",Toast.LENGTH_SHORT).show()
                 }else return Pair(false, tempArray[foundAtPos].start)
             }
             if (abs(tempArray[position].end - value) in 1..5) {
