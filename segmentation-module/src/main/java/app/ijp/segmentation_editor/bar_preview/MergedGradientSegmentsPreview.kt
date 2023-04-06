@@ -10,13 +10,15 @@ import android.widget.Toast
 import app.ijp.segmentation_editor.databinding.FragmentGradientBarPreviewBinding
 import app.ijp.segmentation_editor.model.RangeBarArray
 
-
+/**
+ * Merged Gradient Preview Fragment
+ * It holds Merged Gradient Bar View(Canvas) in it*/
 class MergedGradientSegmentsPreview : Fragment() {
     private var binding: FragmentGradientBarPreviewBinding? = null
     private var vertex = 10f
     private var arrayList: MutableList<RangeBarArray> = mutableListOf()
     private var colorsArray = intArrayOf(Color.GRAY, Color.YELLOW, Color.BLACK)
-    private var floatColorsArray = floatArrayOf(0f,0.25f,0.67f)
+    private var floatColorsStartPositionArray = floatArrayOf(0f,0.25f,0.67f)
 
     /**
      * This will insert this new list in preview*/
@@ -31,7 +33,7 @@ class MergedGradientSegmentsPreview : Fragment() {
                 postionArr.add(it.start/100f)
             }
             colorsArray = myClorList.toIntArray()
-            floatColorsArray = postionArr.toFloatArray()
+            floatColorsStartPositionArray = postionArr.toFloatArray()
 
             this.view?.invalidate()
         }else{
@@ -52,10 +54,12 @@ class MergedGradientSegmentsPreview : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentGradientBarPreviewBinding.inflate(inflater, container, false)
+        /**Providing Default vertex and Gradient COlors onCreate*/
         binding?.previewGradient?.updateVertex(vertex)
         /**
-         * size of both Array should be same*/
-        binding?.previewGradient?.updateColors(colorsArray,floatColorsArray)
+         * size of both colorsArray and floatColorsStartPositionArray Array should be same
+         * because all colors must have one start point*/
+        binding?.previewGradient?.updateColors(colorsArray,floatColorsStartPositionArray)
         return binding?.root
     }
 

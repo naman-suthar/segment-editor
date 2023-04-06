@@ -10,7 +10,9 @@ import android.widget.LinearLayout
 import app.ijp.segmentation_editor.databinding.FragmentVerticalSegmentBarPreviewBinding
 import app.ijp.segmentation_editor.model.RangeBarArray
 
-
+/**
+ * This is Preview fragment for Segments
+ * It has vertical linear layout which will draw the segments of their weight*/
 class SegmentsBarPreviewFragment : Fragment() {
    private var binding: FragmentVerticalSegmentBarPreviewBinding? = null
     private var arrayList: MutableList<RangeBarArray> = mutableListOf()

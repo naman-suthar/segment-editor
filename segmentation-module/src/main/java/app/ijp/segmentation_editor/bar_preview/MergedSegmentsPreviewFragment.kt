@@ -15,6 +15,9 @@ import app.ijp.segmentation_editor.model.RangeBarArray
 class MergedSegmentsPreviewFragment : Fragment() {
     private var binding: FragmentHorizontalBarPreviewBinding? = null
     private var arrayList: MutableList<RangeBarArray> = mutableListOf()
+
+    /**
+     * Update the list and redraw the layout*/
     fun updateList(list: MutableList<RangeBarArray>) {
         arrayList = list
         this.view?.invalidate()
@@ -27,11 +30,18 @@ class MergedSegmentsPreviewFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHorizontalBarPreviewBinding.inflate(inflater, container, false)
 
-        showPreview()
+        drawMergedSegmentPreview()
         return binding?.root
     }
 
-    private fun showPreview(){
+    /**
+     * This function will create the merged bar preview from the array list
+     * It will add all the segment bars as per their weight
+     * MergedSegmentPreview is a LinearLayout with horizontal orientation and weightSum of 100
+     * and we are adding more linearLayout with weight = (end-start)
+     * and backgroundColor of segment.color
+     * */
+    private fun drawMergedSegmentPreview(){
 
         binding?.barViewLayout?.removeAllViews()
         //removes all views
@@ -55,9 +65,6 @@ class MergedSegmentsPreviewFragment : Fragment() {
                 barView.layoutParams = barViewLp
                 binding?.barViewLayout?.addView(barView)
             }
-
-
-
 
         }
     }

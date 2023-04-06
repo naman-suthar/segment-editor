@@ -13,10 +13,10 @@ class GradientPreviewView(context: Context, attributeSet: AttributeSet): View(co
     var colorArray = intArrayOf(Color.BLUE, Color.RED, Color.GREEN)
     var colorPositionArray = floatArrayOf(0f,0.33f,0.67f)
     val path = Path()
+
+    /**
+     * Update the Gradient Bar for the provided colors and redraw*/
     fun updateBar(colors: IntArray,colorsPosition: FloatArray){
-        colors.forEach {
-            Log.d("ColorIsThis","$it")
-        }
         if (colors.size>=2){
             colorArray = colors
             colorPositionArray = colorsPosition

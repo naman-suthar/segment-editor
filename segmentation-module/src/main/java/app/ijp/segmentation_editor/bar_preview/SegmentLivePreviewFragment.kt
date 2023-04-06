@@ -16,7 +16,8 @@ const val BAR_VIEW_VERTICAL = 1
 const val BAR_VIEW_GRADIENT = 2
 
 /**
- * It is Preview fragment for the Segments
+ * It is Preview fragment for the All Segments
+ * It will decide which preview to show based on colorStyle
  * It requires two providers from parent class to preview the segments
  * 1. ArrayList of rangebars : we get this from setArrayListProvider()
  * 2. ColorStyle type: we get this from setColorStyle()
@@ -26,9 +27,15 @@ class SegmentLivePreviewFragment : Fragment() {
     private var arrayList = mutableListOf<RangeBarArray>()
     private var getColorStyleProvider: (() -> Int?)? = null
     private var getArrayRangeProvider: (() -> MutableList<RangeBarArray>)? = null
+
+    /**
+     * This function is to get the colorStyle from parent*/
     fun setColorStyle(colorStyleProvider: (() -> Int?)?) {
         getColorStyleProvider = colorStyleProvider
     }
+
+    /**
+     * This function is to get ArrayList from parent*/
     fun setArrayListProvider(arrayListProvider: (() -> MutableList<RangeBarArray>)?) {
         getArrayRangeProvider = arrayListProvider
     }
@@ -39,14 +46,14 @@ class SegmentLivePreviewFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentBarLivePreviewBinding.inflate(inflater, container, false)
-        showPreview()
+        drawPreview()
 
         return binding?.root
     }
 
     /**
      * This function will take the array list from provider and the colorstyle and will show the Preview accordingly*/
-    private fun showPreview() {
+    private fun drawPreview() {
         getArrayRangeProvider?.let {
             it().let { list ->
                 arrayList = list
@@ -87,8 +94,7 @@ class SegmentLivePreviewFragment : Fragment() {
      * To update the Array List and preview it to layout
      * */
     fun updateView() {
-        showPreview()
-        this.view?.invalidate()
+        drawPreview()
     }
 
 }

@@ -16,9 +16,15 @@ class GradientPreview : Fragment() {
     private var colorsArray = intArrayOf()
     private var floatColorsArray = floatArrayOf()
     private var getGridData: (()->List<GridData>?)? = null
+
+    /**
+     * Provider function for grid Data*/
     fun setGridData(gridDataProvider: (()->List<GridData>?)?){
         getGridData = gridDataProvider
     }
+
+    /**
+     * Update the Gradient Preview when Grid data is changed*/
     fun updateBar() {
 
         val myClorList = mutableListOf<Int>()
@@ -36,9 +42,6 @@ class GradientPreview : Fragment() {
                 binding?.gradientColorBarPreview?.updateBar(colorsArray,floatColorsArray)
             }
         }
-
-
-
 
     }
     override fun onCreateView(

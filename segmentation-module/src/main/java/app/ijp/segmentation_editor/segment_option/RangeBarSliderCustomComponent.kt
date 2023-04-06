@@ -14,6 +14,7 @@ import app.ijp.colorpickerdialog.OnColorChangedListener
 import app.ijp.segmentation_editor.databinding.EachRangebarBinding
 import com.google.android.material.slider.RangeSlider
 import app.ijp.segmentation_editor.model.RangeBarArray
+import kotlin.math.abs
 
 
 var defaultColor: Int = 0
@@ -198,7 +199,7 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
                         mutableListOf(list[ind].start.toFloat(), list[ind].end.toFloat())
                     eachRangebarBinding.startTxt.text = list[ind].start.toString()
                     eachRangebarBinding.endTxt.text = list[ind].end.toString()
-                    if (list[ind].start >= list[ind].end) {
+                    if (abs(list[ind].start - list[ind].end)<5) {
                         eachRangebarBinding.leftImage.visibility = View.VISIBLE
                         eachRangebarBinding.rightImage.visibility = View.VISIBLE
                     } else {

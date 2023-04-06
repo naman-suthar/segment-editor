@@ -50,21 +50,26 @@ class MainActivity : AppCompatActivity() {
                 ColorStyleOption.Gradient
             )
         )
-        myFragment?.let {
+      /*  myFragment?.let {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.segmentation_container, it)
             transaction.commitNow()
-        }
+        }*/
+
         /**
          * For Bar Preview*/
-
+        /**This will called from ColorDialog Instance in both Segment and Gradient Editor Fragment*/
         myFragment?.setColorStyle {
             colorStyle
         }
+        /**
+         * This will be called on Dropdown Item is selected*/
         myFragment?.setOnColorStyleChange {
             Log.d("COlorstyleIs","$it")
             mainActivityViewModel?.updateColorStyle(it)
         }
+        /**
+         * It will be called by SegmentLivePreviewFragment to get temporary Array fro live preview*/
         myFragment?.setDataForSegmentsPreview {
             tempArrayRangeBar
         }
@@ -74,11 +79,15 @@ class MainActivity : AppCompatActivity() {
         myFragment?.setColorHistory {
             listColorHistory
         }
-        /**For Segments and Gradient*/
+        /**
+         * For Segments and Gradient
+         * This will provide them value stored in database for segments Editor*/
         myFragment?.setSegmentsData {
             arrayRangeBar
         }
 
+        /**
+         * This funtion will be passed to SegmentRangeSliderComponent then It will further pass it to RangeSlider and will be called there inside rangebar.OnSliderStopped()*/
         myFragment?.setOnSegmentValueChangeListener { rangeBarArrays, newColor ->
             mainActivityViewModel?.clearColorTable()
             val rangeBarDtoList = rangeBarArrays.map { rb ->
@@ -101,9 +110,14 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+        /**
+         * This funtion will be passed to SegmentRangeSliderComponent then It will further pass it to RangeSlider and will be called there inside rangebar.addOnSliderChange()*/
         myFragment?.setOnSliderChange {
             mainActivityViewModel?.updateArrayState(it, "SliderChange")
         }
+
+
         /**
          * For Gradient*/
         myFragment?.setDataForGradientPreviewAndEditor {
@@ -111,6 +125,9 @@ class MainActivity : AppCompatActivity() {
                 app.ijp.segmentation_editor.model.GridData(it.id, it.seqNumber, it.gridColor)
             }
         }
+
+        /**
+         * This is called by whenever color is changed or added from Single ColorDialog*/
         myFragment?.setSingleGradientColorChanged { strings, newColor ->
             mainActivityViewModel?.clearGridData()
             for (i in strings.indices) {
