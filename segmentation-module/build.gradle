@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 //    implementation 'com.github.naman-suthar:ColorDialogSampleApp:1.0.0'
-    implementation 'com.github.naman-suthar:ColorPickerDialog:1.0.1'
+    implementation 'com.github.naman-suthar:ColorPickerDialog:1.1.1'
     implementation "androidx.compose.ui:ui:1.4.1"
     implementation "androidx.compose.material:material:1.4.1"
     implementation "androidx.compose.runtime:runtime:1.4.1"
@@ -65,7 +65,7 @@ afterEvaluate {
 
                 groupId = 'com.github.naman-suthar'
                 artifactId = 'segmenteditor'
-                version = '1.6'
+                version = '1.7'
             }
         }
     }
