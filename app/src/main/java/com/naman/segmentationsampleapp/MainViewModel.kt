@@ -58,10 +58,6 @@ class MainViewModel(private val mainRepo: MainRepo) : ViewModel() {
     }
 
     fun insertAllGridColor(gridData: List<GridData>) = viewModelScope.launch {
-        gridData.forEach {
-            Log.d("Grid Data","$it")
-        }
-
         val newRowId = mainRepo.insertAllGrid(gridData)
     }
     fun updateGridData(position: Int, color: String) = viewModelScope.launch {

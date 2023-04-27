@@ -3,6 +3,7 @@ package app.ijp.segmentation_editor.segment_editor
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -137,6 +138,14 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
         eachRangebarBinding.rangeBar.addOnSliderTouchListener(object :
             RangeSlider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: RangeSlider) {
+
+
+                if (index == 0 && slider.values[1].toInt() == rangeBarItem.end) {
+                    /**
+                     * 0 value is being moved and we will return nothing */
+                    Log.d("ValuesToIndex","$index ${slider.values[1]} ${rangeBarItem.end}")
+
+                }
             }
 
             override fun onStopTrackingTouch(slider: RangeSlider) {
@@ -173,6 +182,8 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
                 if (index == 0 && position == LEFT_POSITION) {
                     /**
                      * 0 value is being moved and we will return nothing */
+                    Log.d("ValuesToIndex","$index ${slider.values[1]} ${rangeBarItem.end}")
+                    slider.values = mutableListOf(rangeBarItem.start.toFloat(),slider.values[1])
                     return@addOnChangeListener
                 } else {
                     if (position!=-1){

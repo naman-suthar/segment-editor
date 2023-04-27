@@ -45,7 +45,6 @@ class MergedGradientSegmentsPreview : Fragment() {
                 ).show()
             }
         }
-
     }
 
     override fun onCreateView(

@@ -248,7 +248,7 @@ class SegmentRangeBarsFragment : Fragment() {
     }
     private fun validateAndUpdateRangeBarArray(index: Int, position: Int, value: Int): Boolean {
         if (value in 1..5 || value in 95..99) {
-            Toast.makeText(requireContext(), "Minimun 5 length required", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), "Minimum length 5 required for segment", Toast.LENGTH_SHORT)
                 .show()
         } else if (value > 100) {
             Toast.makeText(requireContext(), "Enter Valid Input", Toast.LENGTH_SHORT).show()
@@ -270,7 +270,7 @@ class SegmentRangeBarsFragment : Fragment() {
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            "Already ${isCorrect.second} in the list Minimum 5 length required",
+                            "Already ${isCorrect.second} in the list Minimum 5 length required for segment",
                             Toast.LENGTH_SHORT
                         ).show()
                         false
@@ -466,7 +466,7 @@ class SegmentRangeBarsFragment : Fragment() {
                 if (foundAtPos+1<tempArray.size){
                     tempArray[foundAtPos+1].start = value+1
                     tempArray[foundAtPos].end = tempArray[foundAtPos].start
-                    Toast.makeText(requireContext(),"Segment at position ${foundAtPos+1} deleted because of small length",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(),"Segment at position ${foundAtPos+1} deleted because of small length",Toast.LENGTH_SHORT).show()
                 }else return Pair(false, tempArray[foundAtPos].end)
 
             }
@@ -529,7 +529,7 @@ class SegmentRangeBarsFragment : Fragment() {
                 if (foundAtPos-1>=0){
                     tempArray[foundAtPos-1].end = value-1
                     tempArray[foundAtPos].start = tempArray[foundAtPos].end
-                    Toast.makeText(requireContext(),"Segment at position ${foundAtPos+1} deleted because of small length",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(),"Segment at position ${foundAtPos+1} deleted because of small length",Toast.LENGTH_SHORT).show()
                 }else return Pair(false, tempArray[foundAtPos].start)
             }
             if (abs(tempArray[position].end - value) in 1..5) {

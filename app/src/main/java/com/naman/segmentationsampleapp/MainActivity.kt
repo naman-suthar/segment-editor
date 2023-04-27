@@ -209,9 +209,6 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel?.gridData?.observe(this) {
             Log.d("Observer2", "$it")
-            it.forEach {
-                Log.d("Grid Data", "Obs $it")
-            }
             listGrid = it
             myFragment?.updateGradientFragment()
             myFragment?.updateGradientPreview()
