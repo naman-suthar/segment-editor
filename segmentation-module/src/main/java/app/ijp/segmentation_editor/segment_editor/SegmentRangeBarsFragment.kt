@@ -156,7 +156,7 @@ class SegmentRangeBarsFragment : Fragment() {
     }
     private fun drawBarsToUi() {
         binding?.rangeBarComponent?.removeAllViews()
-        arrayList.forEach { rangeBar ->
+        arrayList.forEachIndexed {indx, rangeBar ->
             /**
              * Creating a new RangeBarSlider Component for each element in Array*/
             val rangeBarView =
@@ -164,7 +164,8 @@ class SegmentRangeBarsFragment : Fragment() {
                     requireContext(),
                     childFragmentManager,
                     rangeBar,
-                    getColorHistory
+                    getColorHistory,
+                    indx
                 )
 
             /**

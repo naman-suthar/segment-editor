@@ -15,6 +15,7 @@ import app.ijp.colorpickerdialog.OnColorChangedListener
 import app.ijp.segmentation_editor.databinding.EachRangebarBinding
 import com.google.android.material.slider.RangeSlider
 import app.ijp.segmentation_editor.extras.model.RangeBarArray
+import com.google.android.material.slider.Slider
 import kotlin.math.abs
 
 
@@ -38,6 +39,7 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
     supportFragmentManager: FragmentManager,
     rangeBarItem: RangeBarArray,
     colorHistory: (() -> List<Int>?)?,
+    val indx: Int,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
     defStyleRes: Int = 0
@@ -86,7 +88,8 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        index = (this@RangeBarSliderCustomComponent.parent as LinearLayout).indexOfChild(this@RangeBarSliderCustomComponent)
+        index =
+            (this@RangeBarSliderCustomComponent.parent as LinearLayout).indexOfChild(this@RangeBarSliderCustomComponent)
     }
 
     init {
@@ -94,6 +97,7 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
          * set values to rangebar */
         eachRangebarBinding.rangeBar.values =
             mutableListOf(rangeBarItem.start.toFloat(), rangeBarItem.end.toFloat())
+        eachRangebarBinding.sliderBar.value = rangeBarItem.end.toFloat()
         /**
          * set text to rangebar*/
         eachRangebarBinding.startTxt.text = rangeBarItem.start.toString()
@@ -135,17 +139,39 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
             colorDialog.show(supportFragmentManager, "Single")
 
         }
+        if (indx == 0) {
+            eachRangebarBinding.sliderBar.visibility = VISIBLE
+            eachRangebarBinding.rangeBar.visibility = GONE
+        } else {
+            eachRangebarBinding.sliderBar.visibility = GONE
+            eachRangebarBinding.rangeBar.visibility = VISIBLE
+        }
+        eachRangebarBinding.sliderBar.addOnSliderTouchListener(
+            object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
+
+                }
+
+                override fun onStopTrackingTouch(slider: Slider) {
+                    onSliderStopsAndUpdateValue?.let {
+                        it(index!!, RIGHT_POSITION, slider.value)
+                    }
+                }
+            }
+        )
+        eachRangebarBinding.sliderBar.addOnChangeListener { slider, value, fromUser ->
+            if (fromUser) {
+
+                onSliderChange?.let {
+                    index?.let { it1 -> it(it1, RIGHT_POSITION, value) }
+                }
+
+            }
+        }
         eachRangebarBinding.rangeBar.addOnSliderTouchListener(object :
             RangeSlider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: RangeSlider) {
 
-
-                if (index == 0 && slider.values[1].toInt() == rangeBarItem.end) {
-                    /**
-                     * 0 value is being moved and we will return nothing */
-                    Log.d("ValuesToIndex","$index ${slider.values[1]} ${rangeBarItem.end}")
-
-                }
             }
 
             override fun onStopTrackingTouch(slider: RangeSlider) {
@@ -159,12 +185,12 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
                 } else {
                     /**
                      * Else start value is changed and we don't want to call callback/provider function if it is first slider (i.e. 0)*/
-                    if (index == 0) slider.values = mutableListOf(0f, slider.values[1])
-                    else {
-                        onSliderStopsAndUpdateValue?.let {
-                            it(index!!, LEFT_POSITION, slider.values[0])
-                        }
+//                    if (index == 0) slider.values = mutableListOf(0f, slider.values[1])
+//                    else {
+                    onSliderStopsAndUpdateValue?.let {
+                        it(index!!, LEFT_POSITION, slider.values[0])
                     }
+//                    }
                 }
 
             }
@@ -173,26 +199,27 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
         eachRangebarBinding.rangeBar.addOnChangeListener { slider, value, fromUser ->
             if (fromUser) {
 
-                val position:Int = if (value == slider.values[0] && value != rangeBarItem.start.toFloat()){
+                /*val position:Int = if (value == slider.values[0] && value != rangeBarItem.start.toFloat()){
                     LEFT_POSITION
                 } else if(value == slider.values[1] && value != rangeBarItem.end.toFloat()){
                     RIGHT_POSITION
-                }else -1
-
-                if (index == 0 && position == LEFT_POSITION) {
-                    /**
-                     * 0 value is being moved and we will return nothing */
+                }else -1*/
+                val position = slider.activeThumbIndex
+                /* if (index == 0 && position == LEFT_POSITION) {
+                     */
+                /**
+                 * 0 value is being moved and we will return nothing *//*
                     Log.d("ValuesToIndex","$index ${slider.values[1]} ${rangeBarItem.end}")
                     slider.values = mutableListOf(rangeBarItem.start.toFloat(),slider.values[1])
                     return@addOnChangeListener
-                } else {
-                    if (position!=-1){
-                        onSliderChange?.let {
-                            index?.let { it1 -> it(it1, position, value) }
-                        }
+                } else {*/
+                if (position != -1) {
+                    onSliderChange?.let {
+                        index?.let { it1 -> it(it1, position, value) }
                     }
-
                 }
+
+//                }
             }
         }
     }
@@ -208,9 +235,10 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
                 index?.let { ind ->
                     eachRangebarBinding.rangeBar.values =
                         mutableListOf(list[ind].start.toFloat(), list[ind].end.toFloat())
+                    eachRangebarBinding.sliderBar.value = list[ind].end.toFloat()
                     eachRangebarBinding.startTxt.text = list[ind].start.toString()
                     eachRangebarBinding.endTxt.text = list[ind].end.toString()
-                    if (abs(list[ind].start - list[ind].end)<5) {
+                    if (abs(list[ind].start - list[ind].end) < 5) {
                         eachRangebarBinding.leftImage.visibility = View.VISIBLE
                         eachRangebarBinding.rightImage.visibility = View.VISIBLE
                     } else {
