@@ -263,7 +263,10 @@ class RangeBarSliderCustomComponent @JvmOverloads constructor(
         val states = arrayOf(intArrayOf(android.R.attr.state_enabled))
         val colors = intArrayOf(color)
         val myList = ColorStateList(states, colors)
+        eachRangebarBinding.sliderBar.trackActiveTintList = myList
+        eachRangebarBinding.sliderBar.thumbTintList = myList
         eachRangebarBinding.rangeBar.trackActiveTintList = myList
         eachRangebarBinding.rangeBar.thumbTintList = myList
+
     }
 }
