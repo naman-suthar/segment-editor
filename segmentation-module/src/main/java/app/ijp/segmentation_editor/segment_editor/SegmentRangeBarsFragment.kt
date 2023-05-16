@@ -403,9 +403,11 @@ class SegmentRangeBarsFragment : Fragment() {
         arrayList.forEachIndexed { i, ra ->
             tempArray.add(RangeBarArray(ra.start, ra.end, ra.color))
             if (value in ra.start..ra.end) {
+                Log.d("DLoginLoopRightThumb:","searching -> $value in [${ra.start} .. ${ra.end}]")
                 foundAtPos = i
             }
         }
+        Log.d("DLog:","value -> $value foundAt -> $foundAtPos")
         if (foundAtPos == index) {
 
             if (abs(tempArray[index].start - value) in 1..5) {
@@ -500,14 +502,16 @@ class SegmentRangeBarsFragment : Fragment() {
     ): Pair<Boolean, Int> {
         val tempArray = mutableListOf<RangeBarArray>()
 
-        var foundAtPos: Int = -1
+        var foundAtPos: Int = 0
         arrayList.forEachIndexed { i, ra ->
             tempArray.add(RangeBarArray(ra.start, ra.end, ra.color))
-            if (value in ra.start..ra.end+2) {
+            Log.d("DLoginLoopLeftThumb:","searching -> $value in [${ra.start} .. ${ra.end}]")
+            if (value in ra.start..ra.end) {
                 foundAtPos = i
+
             }
         }
-
+        Log.d("DLog:","value -> $value foundAt -> $foundAtPos")
         if (foundAtPos == position) {
             Log.d("CheckingSelf","Yes")
             if (abs(tempArray[position].end - value) in 1..5) {
