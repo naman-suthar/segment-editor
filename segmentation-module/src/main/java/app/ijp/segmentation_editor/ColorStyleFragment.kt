@@ -350,6 +350,11 @@ class ColorStyleFragment(var showPreviewFragment: Boolean = true, var options: L
         }
         notifyBarPreview()
         notifyColorStyleInputFragment()
+        getColorStyle?.let {
+            it()?.let {
+                setTextToDropDown(it)
+            }
+        }
         return binding?.root
     }
 
